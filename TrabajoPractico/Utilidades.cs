@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Laboratorio
+namespace TrabajoPractico
 {
-    class Utilidades
+    internal class Ultilidades
     {
         public static double truncar(double nro)
         {

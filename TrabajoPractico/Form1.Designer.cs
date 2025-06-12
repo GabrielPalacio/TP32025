@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtIteraciones = new System.Windows.Forms.TextBox();
             this.txtTiempo = new System.Windows.Forms.TextBox();
@@ -62,13 +62,19 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cIteracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cRNDLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cEntreLL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cProxLleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.roundedButton1 = new TrabajoPractico.RoundedButton();
             this.btnTablavehiculo = new TrabajoPractico.RoundedButton();
             this.btnRunge = new TrabajoPractico.RoundedButton();
             this.btnSimular = new TrabajoPractico.RoundedButton();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTipoVehiculo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -81,7 +87,7 @@
             this.txtIteraciones.ForeColor = System.Drawing.Color.White;
             this.txtIteraciones.Location = new System.Drawing.Point(198, 31);
             this.txtIteraciones.Name = "txtIteraciones";
-            this.txtIteraciones.Size = new System.Drawing.Size(100, 28);
+            this.txtIteraciones.Size = new System.Drawing.Size(100, 30);
             this.txtIteraciones.TabIndex = 0;
             this.txtIteraciones.Text = "100000";
             // 
@@ -91,7 +97,7 @@
             this.txtTiempo.ForeColor = System.Drawing.Color.White;
             this.txtTiempo.Location = new System.Drawing.Point(198, 65);
             this.txtTiempo.Name = "txtTiempo";
-            this.txtTiempo.Size = new System.Drawing.Size(100, 28);
+            this.txtTiempo.Size = new System.Drawing.Size(100, 30);
             this.txtTiempo.TabIndex = 1;
             // 
             // txtDesde
@@ -100,7 +106,7 @@
             this.txtDesde.ForeColor = System.Drawing.Color.White;
             this.txtDesde.Location = new System.Drawing.Point(424, 50);
             this.txtDesde.Name = "txtDesde";
-            this.txtDesde.Size = new System.Drawing.Size(102, 28);
+            this.txtDesde.Size = new System.Drawing.Size(102, 30);
             this.txtDesde.TabIndex = 2;
             this.txtDesde.Text = "0";
             // 
@@ -110,7 +116,7 @@
             this.txtHasta.ForeColor = System.Drawing.Color.White;
             this.txtHasta.Location = new System.Drawing.Point(424, 84);
             this.txtHasta.Name = "txtHasta";
-            this.txtHasta.Size = new System.Drawing.Size(102, 28);
+            this.txtHasta.Size = new System.Drawing.Size(102, 30);
             this.txtHasta.TabIndex = 3;
             // 
             // label1
@@ -179,7 +185,7 @@
             this.txtTllegada.ForeColor = System.Drawing.Color.White;
             this.txtTllegada.Location = new System.Drawing.Point(198, 99);
             this.txtTllegada.Name = "txtTllegada";
-            this.txtTllegada.Size = new System.Drawing.Size(100, 28);
+            this.txtTllegada.Size = new System.Drawing.Size(100, 30);
             this.txtTllegada.TabIndex = 8;
             this.txtTllegada.Text = "13";
             // 
@@ -190,38 +196,38 @@
             this.dgvTipoVehiculo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvTipoVehiculo.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvTipoVehiculo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
-            dataGridViewCellStyle25.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            dataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
-            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTipoVehiculo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle25;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTipoVehiculo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTipoVehiculo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTipoVehiculo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.cTipoVehiculo,
             this.cProbabilidad,
             this.cProbabilidadAcum,
             this.cPrecio});
-            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
-            dataGridViewCellStyle26.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
-            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTipoVehiculo.DefaultCellStyle = dataGridViewCellStyle26;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTipoVehiculo.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvTipoVehiculo.Location = new System.Drawing.Point(31, 154);
             this.dgvTipoVehiculo.Name = "dgvTipoVehiculo";
-            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle27.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            dataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle27.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
-            dataGridViewCellStyle27.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTipoVehiculo.RowHeadersDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTipoVehiculo.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvTipoVehiculo.RowHeadersVisible = false;
             this.dgvTipoVehiculo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvTipoVehiculo.Size = new System.Drawing.Size(351, 129);
@@ -282,7 +288,7 @@
             this.txtConcentracionA.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.txtConcentracionA.Location = new System.Drawing.Point(76, 26);
             this.txtConcentracionA.Name = "txtConcentracionA";
-            this.txtConcentracionA.Size = new System.Drawing.Size(100, 28);
+            this.txtConcentracionA.Size = new System.Drawing.Size(100, 30);
             this.txtConcentracionA.TabIndex = 15;
             this.txtConcentracionA.Text = "5";
             // 
@@ -291,7 +297,7 @@
             this.txtConcentracionB.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.txtConcentracionB.Location = new System.Drawing.Point(76, 60);
             this.txtConcentracionB.Name = "txtConcentracionB";
-            this.txtConcentracionB.Size = new System.Drawing.Size(100, 28);
+            this.txtConcentracionB.Size = new System.Drawing.Size(100, 30);
             this.txtConcentracionB.TabIndex = 16;
             this.txtConcentracionB.Text = "15";
             // 
@@ -313,7 +319,7 @@
             this.txtPaso.ForeColor = System.Drawing.Color.White;
             this.txtPaso.Location = new System.Drawing.Point(1082, 31);
             this.txtPaso.Name = "txtPaso";
-            this.txtPaso.Size = new System.Drawing.Size(82, 28);
+            this.txtPaso.Size = new System.Drawing.Size(82, 30);
             this.txtPaso.TabIndex = 19;
             // 
             // dataGridView1
@@ -321,33 +327,40 @@
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
-            dataGridViewCellStyle28.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            dataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle28.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
-            dataGridViewCellStyle28.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle29.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
-            dataGridViewCellStyle29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle29.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
-            dataGridViewCellStyle29.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle29;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cIteracion,
+            this.cReloj,
+            this.cEvento,
+            this.cRNDLlegada,
+            this.cEntreLL,
+            this.cProxLleg});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.Location = new System.Drawing.Point(31, 310);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle30.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle30.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            dataGridViewCellStyle30.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle30.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
-            dataGridViewCellStyle30.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle30;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(862, 150);
@@ -359,7 +372,7 @@
             this.txtRKA.ForeColor = System.Drawing.Color.White;
             this.txtRKA.Location = new System.Drawing.Point(1082, 65);
             this.txtRKA.Name = "txtRKA";
-            this.txtRKA.Size = new System.Drawing.Size(82, 28);
+            this.txtRKA.Size = new System.Drawing.Size(82, 30);
             this.txtRKA.TabIndex = 22;
             this.txtRKA.Text = "2";
             // 
@@ -369,7 +382,7 @@
             this.txtRKB.ForeColor = System.Drawing.Color.White;
             this.txtRKB.Location = new System.Drawing.Point(1082, 99);
             this.txtRKB.Name = "txtRKB";
-            this.txtRKB.Size = new System.Drawing.Size(82, 28);
+            this.txtRKB.Size = new System.Drawing.Size(82, 30);
             this.txtRKB.TabIndex = 23;
             this.txtRKB.Text = "3";
             // 
@@ -413,6 +426,30 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Concentración";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.label9.ForeColor = System.Drawing.Color.White;
+            this.label9.Location = new System.Drawing.Point(13, 29);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(57, 21);
+            this.label9.TabIndex = 32;
+            this.label9.Text = "Desde:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(17, 63);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(53, 21);
+            this.label10.TabIndex = 33;
+            this.label10.Text = "Hasta:";
+            // 
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
@@ -426,6 +463,41 @@
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Puestos de carga";
+            // 
+            // cIteracion
+            // 
+            this.cIteracion.HeaderText = "Iteracion";
+            this.cIteracion.Name = "cIteracion";
+            // 
+            // cReloj
+            // 
+            this.cReloj.HeaderText = "Reloj";
+            this.cReloj.Name = "cReloj";
+            this.cReloj.Width = 74;
+            // 
+            // cEvento
+            // 
+            this.cEvento.HeaderText = "Evento";
+            this.cEvento.Name = "cEvento";
+            this.cEvento.Width = 87;
+            // 
+            // cRNDLlegada
+            // 
+            this.cRNDLlegada.HeaderText = "Llegada";
+            this.cRNDLlegada.Name = "cRNDLlegada";
+            this.cRNDLlegada.Width = 93;
+            // 
+            // cEntreLL
+            // 
+            this.cEntreLL.HeaderText = "Entre Lleg";
+            this.cEntreLL.Name = "cEntreLL";
+            this.cEntreLL.Width = 113;
+            // 
+            // cProxLleg
+            // 
+            this.cProxLleg.HeaderText = "Prox llegada";
+            this.cProxLleg.Name = "cProxLleg";
+            this.cProxLleg.Width = 130;
             // 
             // roundedButton1
             // 
@@ -515,30 +587,7 @@
             this.btnSimular.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSimular.TextColor = System.Drawing.Color.White;
             this.btnSimular.UseVisualStyleBackColor = false;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(13, 29);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(57, 21);
-            this.label9.TabIndex = 32;
-            this.label9.Text = "Desde:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(17, 63);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(53, 21);
-            this.label10.TabIndex = 33;
-            this.label10.Text = "Hasta:";
+            this.btnSimular.Click += new System.EventHandler(this.btnSimular_Click);
             // 
             // Form1
             // 
@@ -620,6 +669,12 @@
         private RoundedButton roundedButton1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cIteracion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cReloj;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cEvento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cRNDLlegada;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cEntreLL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cProxLleg;
     }
 }
 

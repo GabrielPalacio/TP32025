@@ -13,6 +13,8 @@ namespace TrabajoPractico
 {
     public partial class Form1 : Form
     {
+        private VectorEstado fila_actual = new VectorEstado(); //Fila nueva
+        private VectorEstado vector_estado;
         public Form1()
         {
             this.WindowState = FormWindowState.Maximized;
@@ -50,14 +52,39 @@ namespace TrabajoPractico
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dgvTipoVehiculo.Rows.Insert(0, "Compacto", 45);
-            dgvTipoVehiculo.Rows.Insert(1, "SUV", 25);
-            dgvTipoVehiculo.Rows.Insert(2, "Furgon", 30);
+            dgvTipoVehiculo.Rows.Insert(0, "Compacto", 45, 0.45,300);
+            dgvTipoVehiculo.Rows.Insert(1, "SUV", 25, 0.70, 500);
+            dgvTipoVehiculo.Rows.Insert(2, "Furgon", 30, 1, 1000);
         }
 
         private void roundedButton1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnSimular_Click(object sender, EventArgs e)
+        {
+            //arrancamos con la grilla limpia
+            dataGridView1.Rows.Clear();
+
+            //Validamos campos completados
+            validarCamposCompletados();
+
+            Int64 iteraciones = Convert.ToInt64(txtIteraciones.Text);
+
+            fila_actual = new VectorEstado();
+
+            Int64 i = 0;
+            
+
+
+
+
+        }
+
+        private void validarCamposCompletados()
+        {
+            throw new NotImplementedException();
         }
     }
 }

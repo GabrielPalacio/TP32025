@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Laboratorio
+namespace TrabajoPractico
 {
-    class GeneradoresRND
+    internal class GeneradorRND
     {
         public static Double RndLenguaje()
         {
@@ -33,4 +36,3 @@ namespace Laboratorio
             return Utilidades.truncar(x);
         }
     }
-}
