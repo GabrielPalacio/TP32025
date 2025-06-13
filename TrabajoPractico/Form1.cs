@@ -53,6 +53,11 @@ namespace TrabajoPractico
             dgvTipoVehiculo.Rows.Insert(0, "Compacto", 45, 0.45,300);
             dgvTipoVehiculo.Rows.Insert(1, "SUV", 25, 0.70, 500);
             dgvTipoVehiculo.Rows.Insert(2, "Furgon", 30, 1, 1000);
+
+            dgvTiempoCarga.Rows.Insert(0, 60, 0.5, 0.5);
+            dgvTiempoCarga.Rows.Insert(1, 120, 0.3, 0.8);
+            dgvTiempoCarga.Rows.Insert(2, 180, 0.15, 0.95);
+            dgvTiempoCarga.Rows.Insert(3, 240, 0.05, 1);
         }
 
         private void roundedButton1_Click(object sender, EventArgs e)
@@ -151,7 +156,7 @@ namespace TrabajoPractico
         }
         private void validarCamposCompletados()
         {
-           // throw new NotImplementedException();
+           // esto lo dejo para el ultimo, que  va a ser validar los campos que no permita vacios y algunos caracteres especiales;
         }
     }
 }

@@ -34,6 +34,9 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtIteraciones = new System.Windows.Forms.TextBox();
             this.txtTiempo = new System.Windows.Forms.TextBox();
@@ -57,12 +60,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtPaso = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.cIteracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cRNDLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cEntreLL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cProxLleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtRKA = new System.Windows.Forms.TextBox();
             this.txtRKB = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -71,6 +68,20 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cIteracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cRNDLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cEntreLL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cProxLleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cRNDTipoCoche = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cTipoCoche = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cRNDCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cTiempoCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvTiempoCarga = new System.Windows.Forms.DataGridView();
+            this.cMin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cPrCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cPrAcCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.roundedButton1 = new TrabajoPractico.RoundedButton();
             this.btnTablavehiculo = new TrabajoPractico.RoundedButton();
             this.btnRunge = new TrabajoPractico.RoundedButton();
@@ -79,6 +90,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTiempoCarga)).BeginInit();
             this.SuspendLayout();
             // 
             // txtIteraciones
@@ -232,7 +244,7 @@
             this.dgvTipoVehiculo.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvTipoVehiculo.RowHeadersVisible = false;
             this.dgvTipoVehiculo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvTipoVehiculo.Size = new System.Drawing.Size(351, 129);
+            this.dgvTipoVehiculo.Size = new System.Drawing.Size(351, 145);
             this.dgvTipoVehiculo.TabIndex = 10;
             // 
             // cTipoVehiculo
@@ -345,7 +357,11 @@
             this.cEvento,
             this.cRNDLlegada,
             this.cEntreLL,
-            this.cProxLleg});
+            this.cProxLleg,
+            this.cRNDTipoCoche,
+            this.cTipoCoche,
+            this.cRNDCarga,
+            this.cTiempoCarga});
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
             dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -354,7 +370,7 @@
             dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dataGridView1.Location = new System.Drawing.Point(31, 310);
+            this.dataGridView1.Location = new System.Drawing.Point(31, 339);
             this.dataGridView1.Name = "dataGridView1";
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
@@ -366,43 +382,8 @@
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(862, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(1133, 238);
             this.dataGridView1.TabIndex = 21;
-            // 
-            // cIteracion
-            // 
-            this.cIteracion.HeaderText = "Iteracion";
-            this.cIteracion.Name = "cIteracion";
-            // 
-            // cReloj
-            // 
-            this.cReloj.HeaderText = "Reloj";
-            this.cReloj.Name = "cReloj";
-            this.cReloj.Width = 74;
-            // 
-            // cEvento
-            // 
-            this.cEvento.HeaderText = "Evento";
-            this.cEvento.Name = "cEvento";
-            this.cEvento.Width = 87;
-            // 
-            // cRNDLlegada
-            // 
-            this.cRNDLlegada.HeaderText = "Llegada";
-            this.cRNDLlegada.Name = "cRNDLlegada";
-            this.cRNDLlegada.Width = 93;
-            // 
-            // cEntreLL
-            // 
-            this.cEntreLL.HeaderText = "Entre Lleg";
-            this.cEntreLL.Name = "cEntreLL";
-            this.cEntreLL.Width = 113;
-            // 
-            // cProxLleg
-            // 
-            this.cProxLleg.HeaderText = "Prox llegada";
-            this.cProxLleg.Name = "cProxLleg";
-            this.cProxLleg.Width = 130;
             // 
             // txtRKA
             // 
@@ -502,6 +483,126 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Puestos de carga";
             // 
+            // cIteracion
+            // 
+            this.cIteracion.HeaderText = "Iteracion";
+            this.cIteracion.Name = "cIteracion";
+            // 
+            // cReloj
+            // 
+            this.cReloj.HeaderText = "Reloj";
+            this.cReloj.Name = "cReloj";
+            this.cReloj.Width = 74;
+            // 
+            // cEvento
+            // 
+            this.cEvento.HeaderText = "Evento";
+            this.cEvento.Name = "cEvento";
+            this.cEvento.Width = 87;
+            // 
+            // cRNDLlegada
+            // 
+            this.cRNDLlegada.HeaderText = "RND Llegada";
+            this.cRNDLlegada.Name = "cRNDLlegada";
+            this.cRNDLlegada.Width = 124;
+            // 
+            // cEntreLL
+            // 
+            this.cEntreLL.HeaderText = "Entre Lleg";
+            this.cEntreLL.Name = "cEntreLL";
+            this.cEntreLL.Width = 76;
+            // 
+            // cProxLleg
+            // 
+            this.cProxLleg.HeaderText = "Prox llegada";
+            this.cProxLleg.Name = "cProxLleg";
+            this.cProxLleg.Width = 119;
+            // 
+            // cRNDTipoCoche
+            // 
+            this.cRNDTipoCoche.HeaderText = "RND";
+            this.cRNDTipoCoche.Name = "cRNDTipoCoche";
+            this.cRNDTipoCoche.Width = 71;
+            // 
+            // cTipoCoche
+            // 
+            this.cTipoCoche.HeaderText = "Tipo Vehiculo";
+            this.cTipoCoche.Name = "cTipoCoche";
+            this.cTipoCoche.Width = 127;
+            // 
+            // cRNDCarga
+            // 
+            this.cRNDCarga.HeaderText = "RND";
+            this.cRNDCarga.Name = "cRNDCarga";
+            this.cRNDCarga.Width = 71;
+            // 
+            // cTiempoCarga
+            // 
+            this.cTiempoCarga.HeaderText = "Tiempo de Carga";
+            this.cTiempoCarga.Name = "cTiempoCarga";
+            this.cTiempoCarga.Width = 113;
+            // 
+            // dgvTiempoCarga
+            // 
+            this.dgvTiempoCarga.AllowUserToAddRows = false;
+            this.dgvTiempoCarga.AllowUserToDeleteRows = false;
+            this.dgvTiempoCarga.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvTiempoCarga.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvTiempoCarga.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTiempoCarga.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dgvTiempoCarga.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTiempoCarga.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.cMin,
+            this.cPrCarga,
+            this.cPrAcCarga});
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(226)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTiempoCarga.DefaultCellStyle = dataGridViewCellStyle8;
+            this.dgvTiempoCarga.Location = new System.Drawing.Point(552, 154);
+            this.dgvTiempoCarga.Name = "dgvTiempoCarga";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(172)))), ((int)(((byte)(218)))));
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTiempoCarga.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            this.dgvTiempoCarga.RowHeadersVisible = false;
+            this.dgvTiempoCarga.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTiempoCarga.Size = new System.Drawing.Size(203, 145);
+            this.dgvTiempoCarga.TabIndex = 32;
+            // 
+            // cMin
+            // 
+            this.cMin.HeaderText = "Min";
+            this.cMin.Name = "cMin";
+            this.cMin.Width = 62;
+            // 
+            // cPrCarga
+            // 
+            this.cPrCarga.HeaderText = "P()";
+            this.cPrCarga.Name = "cPrCarga";
+            this.cPrCarga.Width = 56;
+            // 
+            // cPrAcCarga
+            // 
+            this.cPrAcCarga.HeaderText = "P() Ac";
+            this.cPrAcCarga.Name = "cPrAcCarga";
+            this.cPrAcCarga.Width = 82;
+            // 
             // roundedButton1
             // 
             this.roundedButton1.BackColor = System.Drawing.Color.DodgerBlue;
@@ -515,7 +616,7 @@
             this.roundedButton1.ForeColor = System.Drawing.Color.White;
             this.roundedButton1.Image = ((System.Drawing.Image)(resources.GetObject("roundedButton1.Image")));
             this.roundedButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.roundedButton1.Location = new System.Drawing.Point(1082, 493);
+            this.roundedButton1.Location = new System.Drawing.Point(1082, 263);
             this.roundedButton1.Name = "roundedButton1";
             this.roundedButton1.Size = new System.Drawing.Size(82, 50);
             this.roundedButton1.TabIndex = 31;
@@ -538,7 +639,7 @@
             this.btnTablavehiculo.ForeColor = System.Drawing.Color.White;
             this.btnTablavehiculo.Image = ((System.Drawing.Image)(resources.GetObject("btnTablavehiculo.Image")));
             this.btnTablavehiculo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTablavehiculo.Location = new System.Drawing.Point(402, 154);
+            this.btnTablavehiculo.Location = new System.Drawing.Point(388, 154);
             this.btnTablavehiculo.Name = "btnTablavehiculo";
             this.btnTablavehiculo.Size = new System.Drawing.Size(155, 40);
             this.btnTablavehiculo.TabIndex = 30;
@@ -598,6 +699,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1200, 578);
+            this.Controls.Add(this.dgvTiempoCarga);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.roundedButton1);
             this.Controls.Add(this.btnTablavehiculo);
@@ -631,6 +733,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTiempoCarga)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -678,6 +781,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cRNDLlegada;
         private System.Windows.Forms.DataGridViewTextBoxColumn cEntreLL;
         private System.Windows.Forms.DataGridViewTextBoxColumn cProxLleg;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cRNDTipoCoche;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cTipoCoche;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cRNDCarga;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cTiempoCarga;
+        private System.Windows.Forms.DataGridView dgvTiempoCarga;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cMin;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cPrCarga;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cPrAcCarga;
     }
 }
 

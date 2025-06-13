@@ -62,6 +62,8 @@
     <Compile Include="RoundedButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TablaProbabilidadesTiempoCarga.cs" />
+    <Compile Include="TablaProbabilidadesTipoVehiculo.cs" />
     <Compile Include="Utilidades.cs" />
     <Compile Include="VectorEstado.cs" />
     <Compile Include="Vehiculo.cs" />

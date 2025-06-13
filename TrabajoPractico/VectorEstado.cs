@@ -89,11 +89,10 @@ namespace TrabajoPractico
             this.vehiculos_ingresados++;
 
             this.Evento = EventoCarga.LLEGADA_VEHICULO + " " + this.vehiculos_ingresados;
-            this.Reloj = this.TiempoEntreLlegadas;
+            this.Reloj = this.ProximaLlegada;
 
             //Calculamos la proxima llegada
             this.RndLlegada = GeneradorRND.RndLenguaje();
-            //ponemos los valoes de 30 y 90 que no pedían ser parametizables
             this.TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, this.RndLlegada);
             this.ProximaLlegada = this.Reloj + this.TiempoEntreLlegadas;
 
