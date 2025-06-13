@@ -29,10 +29,11 @@ namespace TrabajoPractico
             return Utilidades.truncar(x);
         }
 
-        public static Double exponencial(double lambda, double nro_rnd)
+        public static Double exponencial(double media, double nro_rnd)
         {
-            Double x = (-1 / lambda) * Math.Log(1 - nro_rnd);
+            Double x = (-1)*(media) * Math.Log(1 - nro_rnd);
 
             return Utilidades.truncar(x);
         }
     }
+}

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TrabajoPractico
 {
-    internal class Ultilidades
+    internal class Utilidades
     {
         public static double truncar(double nro)
         {

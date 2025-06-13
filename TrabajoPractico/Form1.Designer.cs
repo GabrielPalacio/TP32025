@@ -57,6 +57,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtPaso = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cIteracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cRNDLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cEntreLL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cProxLleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtRKA = new System.Windows.Forms.TextBox();
             this.txtRKB = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -65,12 +71,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cIteracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cRNDLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cEntreLL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cProxLleg = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.roundedButton1 = new TrabajoPractico.RoundedButton();
             this.btnTablavehiculo = new TrabajoPractico.RoundedButton();
             this.btnRunge = new TrabajoPractico.RoundedButton();
@@ -84,26 +84,27 @@
             // txtIteraciones
             // 
             this.txtIteraciones.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtIteraciones.ForeColor = System.Drawing.Color.White;
+            this.txtIteraciones.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtIteraciones.Location = new System.Drawing.Point(198, 31);
             this.txtIteraciones.Name = "txtIteraciones";
             this.txtIteraciones.Size = new System.Drawing.Size(100, 30);
             this.txtIteraciones.TabIndex = 0;
-            this.txtIteraciones.Text = "100000";
+            this.txtIteraciones.Text = "10";
             // 
             // txtTiempo
             // 
             this.txtTiempo.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtTiempo.ForeColor = System.Drawing.Color.White;
+            this.txtTiempo.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtTiempo.Location = new System.Drawing.Point(198, 65);
             this.txtTiempo.Name = "txtTiempo";
             this.txtTiempo.Size = new System.Drawing.Size(100, 30);
             this.txtTiempo.TabIndex = 1;
+            this.txtTiempo.Text = "20";
             // 
             // txtDesde
             // 
             this.txtDesde.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtDesde.ForeColor = System.Drawing.Color.White;
+            this.txtDesde.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtDesde.Location = new System.Drawing.Point(424, 50);
             this.txtDesde.Name = "txtDesde";
             this.txtDesde.Size = new System.Drawing.Size(102, 30);
@@ -113,11 +114,12 @@
             // txtHasta
             // 
             this.txtHasta.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtHasta.ForeColor = System.Drawing.Color.White;
+            this.txtHasta.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtHasta.Location = new System.Drawing.Point(424, 84);
             this.txtHasta.Name = "txtHasta";
             this.txtHasta.Size = new System.Drawing.Size(102, 30);
             this.txtHasta.TabIndex = 3;
+            this.txtHasta.Text = "30";
             // 
             // label1
             // 
@@ -182,7 +184,7 @@
             // txtTllegada
             // 
             this.txtTllegada.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtTllegada.ForeColor = System.Drawing.Color.White;
+            this.txtTllegada.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtTllegada.Location = new System.Drawing.Point(198, 99);
             this.txtTllegada.Name = "txtTllegada";
             this.txtTllegada.Size = new System.Drawing.Size(100, 30);
@@ -316,11 +318,12 @@
             // txtPaso
             // 
             this.txtPaso.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtPaso.ForeColor = System.Drawing.Color.White;
+            this.txtPaso.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtPaso.Location = new System.Drawing.Point(1082, 31);
             this.txtPaso.Name = "txtPaso";
             this.txtPaso.Size = new System.Drawing.Size(82, 30);
             this.txtPaso.TabIndex = 19;
+            this.txtPaso.Text = "0.1";
             // 
             // dataGridView1
             // 
@@ -366,10 +369,45 @@
             this.dataGridView1.Size = new System.Drawing.Size(862, 150);
             this.dataGridView1.TabIndex = 21;
             // 
+            // cIteracion
+            // 
+            this.cIteracion.HeaderText = "Iteracion";
+            this.cIteracion.Name = "cIteracion";
+            // 
+            // cReloj
+            // 
+            this.cReloj.HeaderText = "Reloj";
+            this.cReloj.Name = "cReloj";
+            this.cReloj.Width = 74;
+            // 
+            // cEvento
+            // 
+            this.cEvento.HeaderText = "Evento";
+            this.cEvento.Name = "cEvento";
+            this.cEvento.Width = 87;
+            // 
+            // cRNDLlegada
+            // 
+            this.cRNDLlegada.HeaderText = "Llegada";
+            this.cRNDLlegada.Name = "cRNDLlegada";
+            this.cRNDLlegada.Width = 93;
+            // 
+            // cEntreLL
+            // 
+            this.cEntreLL.HeaderText = "Entre Lleg";
+            this.cEntreLL.Name = "cEntreLL";
+            this.cEntreLL.Width = 113;
+            // 
+            // cProxLleg
+            // 
+            this.cProxLleg.HeaderText = "Prox llegada";
+            this.cProxLleg.Name = "cProxLleg";
+            this.cProxLleg.Width = 130;
+            // 
             // txtRKA
             // 
             this.txtRKA.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtRKA.ForeColor = System.Drawing.Color.White;
+            this.txtRKA.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtRKA.Location = new System.Drawing.Point(1082, 65);
             this.txtRKA.Name = "txtRKA";
             this.txtRKA.Size = new System.Drawing.Size(82, 30);
@@ -379,7 +417,7 @@
             // txtRKB
             // 
             this.txtRKB.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.txtRKB.ForeColor = System.Drawing.Color.White;
+            this.txtRKB.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtRKB.Location = new System.Drawing.Point(1082, 99);
             this.txtRKB.Name = "txtRKB";
             this.txtRKB.Size = new System.Drawing.Size(82, 30);
@@ -463,41 +501,6 @@
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Puestos de carga";
-            // 
-            // cIteracion
-            // 
-            this.cIteracion.HeaderText = "Iteracion";
-            this.cIteracion.Name = "cIteracion";
-            // 
-            // cReloj
-            // 
-            this.cReloj.HeaderText = "Reloj";
-            this.cReloj.Name = "cReloj";
-            this.cReloj.Width = 74;
-            // 
-            // cEvento
-            // 
-            this.cEvento.HeaderText = "Evento";
-            this.cEvento.Name = "cEvento";
-            this.cEvento.Width = 87;
-            // 
-            // cRNDLlegada
-            // 
-            this.cRNDLlegada.HeaderText = "Llegada";
-            this.cRNDLlegada.Name = "cRNDLlegada";
-            this.cRNDLlegada.Width = 93;
-            // 
-            // cEntreLL
-            // 
-            this.cEntreLL.HeaderText = "Entre Lleg";
-            this.cEntreLL.Name = "cEntreLL";
-            this.cEntreLL.Width = 113;
-            // 
-            // cProxLleg
-            // 
-            this.cProxLleg.HeaderText = "Prox llegada";
-            this.cProxLleg.Name = "cProxLleg";
-            this.cProxLleg.Width = 130;
             // 
             // roundedButton1
             // 

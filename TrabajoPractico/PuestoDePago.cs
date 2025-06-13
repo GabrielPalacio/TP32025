@@ -8,5 +8,7 @@ namespace TrabajoPractico
 {
     internal class PuestoDePago
     {
+        public static string LIBRE = "L";
+        public static string OCUPADO = "Oc";
     }
 }
