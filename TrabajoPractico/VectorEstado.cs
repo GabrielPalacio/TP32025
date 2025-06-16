@@ -26,9 +26,9 @@ namespace TrabajoPractico
         public double RndDuracionCarga { get; set; }
         public double DuracionCarga { get; set; }
 
-        // Puestos de carga dinámicos (Inicio y Fin de carga por puesto)
-        //public List<double?> TInicioCarga { get; set; } = new(); // indexado 0 a n-1
-       // public List<double?> TFinCarga { get; set; } = new();
+        public List<string> EstadoPuestos { get; set; }
+        public List<double> TiempoOcupadoPuestos { get; set; }
+
 
         // Zona de pago
         public double RndConcentracion { get; set; }
@@ -54,11 +54,27 @@ namespace TrabajoPractico
 
             this.vehiculos = new List<Vehiculo>();
 
+            // Inicialización vacía, luego se setea según si hay 8 o 10 puestos
+            EstadoPuestos = new List<string>();
+            TiempoOcupadoPuestos = new List<double>();
 
         }
 
+        public void InicializarPuestos(int cantidadPuestos)
+        {
+            EstadoPuestos.Clear();
+            TiempoOcupadoPuestos.Clear();
+            for (int i = 0; i < cantidadPuestos; i++)
+            {
+                EstadoPuestos.Add("Libre");
+                TiempoOcupadoPuestos.Add(0);
+            }
+        }
+
+
+
         //Este es el evento 0, con el cual siempre va a inicial el sistema
-        public void EventoInicio(double mediaLlegadas)
+        public void EventoInicio(double mediaLlegadas, int cantidadPuestos)
         {
             Evento = EventoCarga.INICIO;
             Reloj = 0;
@@ -78,6 +94,8 @@ namespace TrabajoPractico
             NivelConcentracionObjetivo = 0;
             TiempoPago = 0;
             EstadoPago = "Libre";
+
+            InicializarPuestos(cantidadPuestos);
 
             AutosAtendidos = 0;
             AutosRechazados = 0;
@@ -99,6 +117,8 @@ namespace TrabajoPractico
 
             //Creamos un nuevo vehiculo, con estado EA por defecto
             Vehiculo nuevo_vehiculo = new Vehiculo(this.vehiculos_ingresados, this.Reloj);
+
+            this.RndDuracionCarga = GeneradorRND.RndLenguaje();
 
         }
 

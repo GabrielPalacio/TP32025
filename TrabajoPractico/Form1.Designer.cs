@@ -60,14 +60,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtPaso = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.txtRKA = new System.Windows.Forms.TextBox();
-            this.txtRKB = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cIteracion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cReloj = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cEvento = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,6 +70,14 @@
             this.cTipoCoche = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cRNDCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cTiempoCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtRKA = new System.Windows.Forms.TextBox();
+            this.txtRKB = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvTiempoCarga = new System.Windows.Forms.DataGridView();
             this.cMin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cPrCarga = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -275,6 +275,7 @@
             // 
             this.rb8.AutoSize = true;
             this.rb8.BackColor = System.Drawing.Color.Transparent;
+            this.rb8.Checked = true;
             this.rb8.Font = new System.Drawing.Font("Miriam CLM", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.rb8.Location = new System.Drawing.Point(16, 26);
             this.rb8.Name = "rb8";
@@ -293,7 +294,6 @@
             this.rb10.Name = "rb10";
             this.rb10.Size = new System.Drawing.Size(172, 25);
             this.rb10.TabIndex = 14;
-            this.rb10.TabStop = true;
             this.rb10.Text = "10 Puestos de carga";
             this.rb10.UseVisualStyleBackColor = false;
             // 
@@ -384,6 +384,65 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(1133, 238);
             this.dataGridView1.TabIndex = 21;
+            // 
+            // cIteracion
+            // 
+            this.cIteracion.HeaderText = "Iteracion";
+            this.cIteracion.Name = "cIteracion";
+            // 
+            // cReloj
+            // 
+            this.cReloj.HeaderText = "Reloj";
+            this.cReloj.Name = "cReloj";
+            this.cReloj.Width = 74;
+            // 
+            // cEvento
+            // 
+            this.cEvento.HeaderText = "Evento";
+            this.cEvento.Name = "cEvento";
+            this.cEvento.Width = 87;
+            // 
+            // cRNDLlegada
+            // 
+            this.cRNDLlegada.HeaderText = "RND Llegada";
+            this.cRNDLlegada.Name = "cRNDLlegada";
+            this.cRNDLlegada.Width = 124;
+            // 
+            // cEntreLL
+            // 
+            this.cEntreLL.HeaderText = "Entre Lleg";
+            this.cEntreLL.Name = "cEntreLL";
+            this.cEntreLL.Width = 76;
+            // 
+            // cProxLleg
+            // 
+            this.cProxLleg.HeaderText = "Prox llegada";
+            this.cProxLleg.Name = "cProxLleg";
+            this.cProxLleg.Width = 119;
+            // 
+            // cRNDTipoCoche
+            // 
+            this.cRNDTipoCoche.HeaderText = "RND";
+            this.cRNDTipoCoche.Name = "cRNDTipoCoche";
+            this.cRNDTipoCoche.Width = 71;
+            // 
+            // cTipoCoche
+            // 
+            this.cTipoCoche.HeaderText = "Tipo Vehiculo";
+            this.cTipoCoche.Name = "cTipoCoche";
+            this.cTipoCoche.Width = 127;
+            // 
+            // cRNDCarga
+            // 
+            this.cRNDCarga.HeaderText = "RND";
+            this.cRNDCarga.Name = "cRNDCarga";
+            this.cRNDCarga.Width = 71;
+            // 
+            // cTiempoCarga
+            // 
+            this.cTiempoCarga.HeaderText = "Tiempo de Carga";
+            this.cTiempoCarga.Name = "cTiempoCarga";
+            this.cTiempoCarga.Width = 113;
             // 
             // txtRKA
             // 
@@ -482,65 +541,6 @@
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Puestos de carga";
-            // 
-            // cIteracion
-            // 
-            this.cIteracion.HeaderText = "Iteracion";
-            this.cIteracion.Name = "cIteracion";
-            // 
-            // cReloj
-            // 
-            this.cReloj.HeaderText = "Reloj";
-            this.cReloj.Name = "cReloj";
-            this.cReloj.Width = 74;
-            // 
-            // cEvento
-            // 
-            this.cEvento.HeaderText = "Evento";
-            this.cEvento.Name = "cEvento";
-            this.cEvento.Width = 87;
-            // 
-            // cRNDLlegada
-            // 
-            this.cRNDLlegada.HeaderText = "RND Llegada";
-            this.cRNDLlegada.Name = "cRNDLlegada";
-            this.cRNDLlegada.Width = 124;
-            // 
-            // cEntreLL
-            // 
-            this.cEntreLL.HeaderText = "Entre Lleg";
-            this.cEntreLL.Name = "cEntreLL";
-            this.cEntreLL.Width = 76;
-            // 
-            // cProxLleg
-            // 
-            this.cProxLleg.HeaderText = "Prox llegada";
-            this.cProxLleg.Name = "cProxLleg";
-            this.cProxLleg.Width = 119;
-            // 
-            // cRNDTipoCoche
-            // 
-            this.cRNDTipoCoche.HeaderText = "RND";
-            this.cRNDTipoCoche.Name = "cRNDTipoCoche";
-            this.cRNDTipoCoche.Width = 71;
-            // 
-            // cTipoCoche
-            // 
-            this.cTipoCoche.HeaderText = "Tipo Vehiculo";
-            this.cTipoCoche.Name = "cTipoCoche";
-            this.cTipoCoche.Width = 127;
-            // 
-            // cRNDCarga
-            // 
-            this.cRNDCarga.HeaderText = "RND";
-            this.cRNDCarga.Name = "cRNDCarga";
-            this.cRNDCarga.Width = 71;
-            // 
-            // cTiempoCarga
-            // 
-            this.cTiempoCarga.HeaderText = "Tiempo de Carga";
-            this.cTiempoCarga.Name = "cTiempoCarga";
-            this.cTiempoCarga.Width = 113;
             // 
             // dgvTiempoCarga
             // 

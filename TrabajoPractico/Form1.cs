@@ -58,6 +58,8 @@ namespace TrabajoPractico
             dgvTiempoCarga.Rows.Insert(1, 120, 0.3, 0.8);
             dgvTiempoCarga.Rows.Insert(2, 180, 0.15, 0.95);
             dgvTiempoCarga.Rows.Insert(3, 240, 0.05, 1);
+
+
         }
 
         private void roundedButton1_Click(object sender, EventArgs e)
@@ -67,6 +69,11 @@ namespace TrabajoPractico
 
         private void btnSimular_Click(object sender, EventArgs e)
         {
+            int cantidadPuestos = rb8.Checked ? 8 : 10;
+
+            //Llamamos a la funcion que va a configurar las columnas(puestos) de la grilla ver que demora
+            ConfigurarColumnasPuestos();
+
             //arrancamos con la grilla limpia
             dataGridView1.Rows.Clear();
 
@@ -90,7 +97,7 @@ namespace TrabajoPractico
                 switch (nombre_prox_evento)
                 {
                     case EventoCarga.INICIO:
-                        this.fila_actual.EventoInicio(tiempo_entre_llegadas);
+                        this.fila_actual.EventoInicio(tiempo_entre_llegadas, cantidadPuestos);
                         break;
 
                     case EventoCarga.LLEGADA_VEHICULO:
@@ -158,5 +165,38 @@ namespace TrabajoPractico
         {
            // esto lo dejo para el ultimo, que  va a ser validar los campos que no permita vacios y algunos caracteres especiales;
         }
+
+        private void ConfigurarColumnasPuestos()
+        {
+            int cantidadPuestos = rb8.Checked ? 8 : 10;
+
+            // Remover columnas anteriores si ya existían (solo las dinámicas)
+            for (int i = dataGridView1.Columns.Count - 1; i >= 0; i--)
+            {
+                string nombre = dataGridView1.Columns[i].Name;
+                if (nombre.StartsWith("EstadoPuesto") || nombre.StartsWith("TiempoOcupado") ||
+                    nombre == "PorcentajeOcupacion" || nombre == "EstadoPago" || nombre == "RNDPago" ||
+                    nombre == "NivelConcentracion" || nombre == "DemoraPago" || nombre == "ColaPago")
+                {
+                    dataGridView1.Columns.RemoveAt(i);
+                }
+            }
+
+            // Agregamos columnas dinámicas por puesto
+            for (int i = 1; i <= cantidadPuestos; i++)
+            {
+                dataGridView1.Columns.Add($"EstadoPuesto{i}", $"Estado Puesto {i}");
+                dataGridView1.Columns.Add($"TiempoOcupado{i}", $"Tiempo ocupado Puesto {i}");
+            }
+
+            // Agregamos las columnas fijas finales
+            dataGridView1.Columns.Add("PorcentajeOcupacion", "Porcentaje de ocupación de puestos");
+            dataGridView1.Columns.Add("EstadoPago", "Estado");
+            dataGridView1.Columns.Add("RNDPago", "RND");
+            dataGridView1.Columns.Add("NivelConcentracion", "Nivel de Concentración");
+            dataGridView1.Columns.Add("DemoraPago", "Demora");
+            dataGridView1.Columns.Add("ColaPago", "Cola pago");
+        }
+
     }
 }
