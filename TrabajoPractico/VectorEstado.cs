@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrabajoPractico
 {
     class VectorEstado
     {
         private int vehiculos_ingresados;
-        private List<Vehiculo> vehiculos;
+
+        // Vehículos
+        public List<Vehiculo> Vehiculos { get; set; }
+
         // Generales
         public int Iteracion { get; set; }
         public string Evento { get; set; }
@@ -20,18 +20,18 @@ namespace TrabajoPractico
         public double TiempoEntreLlegadas { get; set; }
         public double ProximaLlegada { get; set; }
 
-        // Vehículo
+        // Vehículo generado
         public double RndTipoVehiculo { get; set; }
         public string TipoVehiculo { get; set; }
         public double RndDuracionCarga { get; set; }
         public double DuracionCarga { get; set; }
 
+        // Puestos de carga
         public List<string> EstadoPuestos { get; set; }
         public List<double> TiempoOcupadoPuestos { get; set; }
 
-        public double PorcentajeOcupacionPuestos;
-
         // Zona de pago
+        public double PorcentajeOcupacionPuestos;
         public double RndConcentracion { get; set; }
         public double NivelConcentracionObjetivo { get; set; }
         public double TiempoPago { get; set; }
@@ -39,28 +39,22 @@ namespace TrabajoPractico
 
         // Estadísticas
         public double MontoPorCarga { get; set; }
-        public double MontoPorPago { get; set; }
+        public double MontoTotal { get; set; }
         public int AutosAtendidos { get; set; }
         public int AutosRechazados { get; set; }
         public double Recaudacion { get; set; }
+        public int colaPuestoPago { get; set; }
 
         public VectorEstado()
         {
-            this.vehiculos_ingresados = 0;
+            vehiculos_ingresados = 0;
+            Iteracion = 0;
+            Evento = "";
+            Reloj = 0;
 
-            this.Iteracion = 0;
-            this.Evento = "";
-            this.Reloj = 0;
-            this.RndLlegada = 0;
-            this.TiempoEntreLlegadas = 0;
-            this.ProximaLlegada = 0;
-
-            this.vehiculos = new List<Vehiculo>();
-
-            // Inicialización vacía, luego se setea según si hay 8 o 10 puestos
+            Vehiculos = new List<Vehiculo>();
             EstadoPuestos = new List<string>();
             TiempoOcupadoPuestos = new List<double>();
-
         }
 
         public void InicializarPuestos(int cantidadPuestos)
@@ -74,20 +68,15 @@ namespace TrabajoPractico
             }
         }
 
-
-
-        //Este es el evento 0, con el cual siempre va a inicial el sistema
         public void EventoInicio(double mediaLlegadas, int cantidadPuestos)
         {
             Evento = EventoCarga.INICIO;
             Reloj = 0;
 
-            // Generar próxima llegada con distribución exponencial
             RndLlegada = GeneradorRND.RndLenguaje();
             TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, RndLlegada);
             ProximaLlegada = Reloj + TiempoEntreLlegadas;
 
-            // Estado inicial del sistema
             RndTipoVehiculo = 0;
             TipoVehiculo = "";
             RndDuracionCarga = 0;
@@ -99,58 +88,57 @@ namespace TrabajoPractico
             EstadoPago = "Libre";
 
             InicializarPuestos(cantidadPuestos);
-
             AutosAtendidos = 0;
             AutosRechazados = 0;
             Recaudacion = 0;
+
+            PorcentajeOcupacionPuestos = 0;
+            MontoPorCarga = 0;
+            MontoTotal = 0;
+            EstadoPago = "Libre";
+            colaPuestoPago = 0;
         }
 
         public void EventoLlegada(double mediaLlegadas)
         {
-            this.vehiculos_ingresados++;
-            this.Evento = EventoCarga.LLEGADA_VEHICULO + " " + this.vehiculos_ingresados;
-            this.Reloj = this.ProximaLlegada;
+            vehiculos_ingresados++;
+            Evento = EventoCarga.LLEGADA_VEHICULO + " " + vehiculos_ingresados;
+            Reloj = ProximaLlegada;
 
-            // Calculamos próxima llegada
-            this.RndLlegada = GeneradorRND.RndLenguaje();
-            this.TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, this.RndLlegada);
-            this.ProximaLlegada = this.Reloj + this.TiempoEntreLlegadas;
+            RndLlegada = GeneradorRND.RndLenguaje();
+            TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, RndLlegada);
+            ProximaLlegada = Reloj + TiempoEntreLlegadas;
 
+            RndTipoVehiculo = GeneradorRND.RndLenguaje();
+            TipoVehiculo = "Furgon"; // TODO
+            RndDuracionCarga = GeneradorRND.RndLenguaje();
+            DuracionCarga = 10; // TODO
 
-
-            // Calculamos el tipo de vehículo y su duración de carga
-            this.RndTipoVehiculo = GeneradorRND.RndLenguaje();
-            this.TipoVehiculo = "Furgon"; // TO DO
-            this.RndDuracionCarga = GeneradorRND.RndLenguaje();
-            this.DuracionCarga = 10; //TO DO
-            // Intentamos asignar un puesto de carga
             int puestoLibre = EstadoPuestos.FindIndex(e => e == "Libre");
 
-            // Creamos el nuevo vehículo
-            Vehiculo nuevo_vehiculo = new Vehiculo(this.vehiculos_ingresados, this.Reloj);
+            Vehiculo nuevo = new Vehiculo(vehiculos_ingresados, Reloj);
 
             if (puestoLibre != -1)
             {
                 EstadoPuestos[puestoLibre] = "Cargando";
                 TiempoOcupadoPuestos[puestoLibre] = 0;
-                nuevo_vehiculo.PuestoAsignado = puestoLibre;
-                nuevo_vehiculo.Estado = "Cargando";
-                nuevo_vehiculo.tFinCarga = this.Reloj + this.DuracionCarga; // Duración de carga
+                nuevo.PuestoAsignado = puestoLibre;
+                nuevo.Estado = "Cargando";
+                nuevo.tFinCarga = Reloj + DuracionCarga;
                 AutosAtendidos++;
             }
             else
             {
-                nuevo_vehiculo.Estado = "Rechazado";
+                nuevo.Estado = "Rechazado";
                 AutosRechazados++;
             }
 
-            // Registramos el vehículo (si necesitás rastrearlo después)
-            this.vehiculos.Add(nuevo_vehiculo);
+            Vehiculos.Add(nuevo);
         }
 
         public void ActualizarTiemposOcupacion(double relojAnterior)
         {
-            double deltaT = this.Reloj - relojAnterior;
+            double deltaT = Reloj - relojAnterior;
 
             for (int i = 0; i < EstadoPuestos.Count; i++)
             {
@@ -160,25 +148,16 @@ namespace TrabajoPractico
                 }
             }
         }
+
         public void ActualizarEstadosVehiculos()
         {
-            foreach (var v in vehiculos)
+            foreach (var v in Vehiculos)
             {
                 if (v.Estado == "Cargando" && v.tFinCarga <= Reloj)
                 {
                     v.Estado = "Esperando pago";
-           
-
-                }
-                else if (v.Estado == "Esperando pago")
-                {
-                    // Podés implementar cola o evento de pago futuro
                 }
             }
         }
-
-
     }
-
-
 }

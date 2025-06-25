@@ -164,12 +164,14 @@ namespace TrabajoPractico
             );
 
             // 🔁 Agregar dinámicamente los estados y tiempos de cada puesto
-            int colBase = 10; // porque ya insertaste 6 columnas antes
+            int colBase = 10; 
             for (int i = 0; i < fila.EstadoPuestos.Count; i++)
             {
                 dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2)].Value = fila.EstadoPuestos[i];
                 dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2) + 1].Value = fila.TiempoOcupadoPuestos[i].ToString("N2");
             }
+            agregarVehiculos(fila,rowIndex);
+
         }
 
         private void validarCamposCompletados()
@@ -207,7 +209,66 @@ namespace TrabajoPractico
             dataGridView1.Columns.Add("NivelConcentracion", "Nivel de Concentración");
             dataGridView1.Columns.Add("DemoraPago", "Demora");
             dataGridView1.Columns.Add("ColaPago", "Cola pago");
+            dataGridView1.Columns.Add("MontoPorCarga", "Monto por carga");
+            dataGridView1.Columns.Add("MontoTotal", "Monto total");
+
+
         }
+        private void agregarVehiculos(VectorEstado fila_actual, int rowIndex)
+        {
+            string baseCol = "Vehiculo";
+            string headerPrefix = "Vehículo ";
+
+            foreach (Vehiculo item in fila_actual.Vehiculos)
+            {
+                string colEstado = $"{baseCol}_{item.nro}_Estado";
+                string colCarga = $"{baseCol}_{item.nro}_Carga";
+                string colCobro = $"{baseCol}_{item.nro}_Cobro";
+
+                // Agregar columnas si no existen
+                if (!dataGridView1.Columns.Contains(colEstado))
+                    dataGridView1.Columns.Add(colEstado, headerPrefix + item.nro + " Estado");
+
+                if (!dataGridView1.Columns.Contains(colCarga))
+                    dataGridView1.Columns.Add(colCarga, headerPrefix + item.nro + " Carga");
+
+                if (!dataGridView1.Columns.Contains(colCobro))
+                    dataGridView1.Columns.Add(colCobro, headerPrefix + item.nro + " Cobro");
+
+                // Mostrar estado actual, con el puesto asignado si aplica
+                if (item.Estado.StartsWith("Cargando") && item.PuestoAsignado.HasValue)
+                {
+                    dataGridView1[colEstado, rowIndex].Value = $"Cargando ({item.PuestoAsignado.Value + 1})";
+                }
+                else
+                {
+                    dataGridView1[colEstado, rowIndex].Value = item.Estado;
+                }
+
+
+                // Mostrar rango de carga si aplica
+                if (item.Estado.Contains("Cargando") && item.tFinCarga > 0)
+                {
+                    dataGridView1[colCarga, rowIndex].Value = $"{item.tInicioCarga:N2} - {item.tFinCarga:N4}";
+                }
+                else
+                {
+                    dataGridView1[colCarga, rowIndex].Value = "";
+                }
+
+                // Mostrar tiempo de cobro solo si está pagando o finalizó
+                if (item.Estado == "En puesto de pago" || item.Estado == "Abandona la estación")
+                {
+                    dataGridView1[colCobro, rowIndex].Value = item.TiempoCobro > 0 ? item.TiempoCobro.ToString("N4") : "";
+                }
+                else
+                {
+                    dataGridView1[colCobro, rowIndex].Value = "";
+                }
+            }
+        }
+
+
 
     }
 }
