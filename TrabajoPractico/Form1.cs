@@ -93,6 +93,7 @@ namespace TrabajoPractico
             for (; i <= iteraciones && this.fila_actual.Reloj <= tiempo; i++)
             {
                 string nombre_prox_evento = obtener_proximo_evento();
+                double relojAnterior = fila_actual.Reloj;
 
                 switch (nombre_prox_evento)
                 {
@@ -105,6 +106,8 @@ namespace TrabajoPractico
                         break;
 
                 }
+                fila_actual.ActualizarTiemposOcupacion(relojAnterior);
+                fila_actual.ActualizarEstadosVehiculos();
 
                 //Calculos estadisticos
 
@@ -146,21 +149,29 @@ namespace TrabajoPractico
 
         private void agregarFila(Int64 nroFila, VectorEstado fila, bool visible = true)
         {
-            dataGridView1.Rows.Add(
-                    nroFila,
-                    fila.Reloj.ToString("N4"),
-                    fila.Evento,
-                    (fila.RndLlegada == 0) ? "" : fila.RndLlegada.ToString("N4"),
-                    (fila.TiempoEntreLlegadas == 0) ? "" : fila.TiempoEntreLlegadas.ToString(),
-                    (fila.ProximaLlegada == 0) ? "" : fila.ProximaLlegada.ToString("N4")
+            int rowIndex = dataGridView1.Rows.Add(
+                nroFila,
+                fila.Reloj.ToString("N4"),
+                fila.Evento,
+                (fila.RndLlegada == 0) ? "" : fila.RndLlegada.ToString("N4"),
+                (fila.TiempoEntreLlegadas == 0) ? "" : fila.TiempoEntreLlegadas.ToString(),
+                (fila.ProximaLlegada == 0) ? "" : fila.ProximaLlegada.ToString("N4"),
+                fila.RndTipoVehiculo.ToString("N4"),
+                fila.TipoVehiculo,
+                fila.RndDuracionCarga.ToString("N4"),
+                fila.DuracionCarga.ToString("N2")
+
             );
 
-            int indice_fila_nueva = dataGridView1.Rows.Count - 1;
-
-
-
-
+            // 🔁 Agregar dinámicamente los estados y tiempos de cada puesto
+            int colBase = 10; // porque ya insertaste 6 columnas antes
+            for (int i = 0; i < fila.EstadoPuestos.Count; i++)
+            {
+                dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2)].Value = fila.EstadoPuestos[i];
+                dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2) + 1].Value = fila.TiempoOcupadoPuestos[i].ToString("N2");
+            }
         }
+
         private void validarCamposCompletados()
         {
            // esto lo dejo para el ultimo, que  va a ser validar los campos que no permita vacios y algunos caracteres especiales;

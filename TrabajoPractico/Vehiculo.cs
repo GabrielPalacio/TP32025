@@ -10,12 +10,15 @@ namespace TrabajoPractico
     {
         public Vehiculo(int nro, double tiempo_ingreso) {
             this.nro = nro;
+            this.Estado = "Cargando";
+            this.tInicioCarga = tiempo_ingreso;
         }
         public int nro { get; set; }
-        public string Estado { get; set; } 
-        public String tipoVehiculo { get; set; }
-        public String tInicioCarga { get; set; }
-        public String tFinCarga { get; set; }
+        public string Estado { get; set; }
+        public double TiempoCobro { get; set; }
+        public double tInicioCarga { get; set; }
+        public double tFinCarga { get; set; }
+        public int? PuestoAsignado { get; set; }
 
     }
 }

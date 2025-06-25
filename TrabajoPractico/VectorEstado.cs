@@ -29,6 +29,7 @@ namespace TrabajoPractico
         public List<string> EstadoPuestos { get; set; }
         public List<double> TiempoOcupadoPuestos { get; set; }
 
+        public double PorcentajeOcupacionPuestos;
 
         // Zona de pago
         public double RndConcentracion { get; set; }
@@ -37,6 +38,8 @@ namespace TrabajoPractico
         public string EstadoPago { get; set; }
 
         // Estadísticas
+        public double MontoPorCarga { get; set; }
+        public double MontoPorPago { get; set; }
         public int AutosAtendidos { get; set; }
         public int AutosRechazados { get; set; }
         public double Recaudacion { get; set; }
@@ -105,22 +108,75 @@ namespace TrabajoPractico
         public void EventoLlegada(double mediaLlegadas)
         {
             this.vehiculos_ingresados++;
-
             this.Evento = EventoCarga.LLEGADA_VEHICULO + " " + this.vehiculos_ingresados;
             this.Reloj = this.ProximaLlegada;
 
-            //Calculamos la proxima llegada
+            // Calculamos próxima llegada
             this.RndLlegada = GeneradorRND.RndLenguaje();
             this.TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, this.RndLlegada);
             this.ProximaLlegada = this.Reloj + this.TiempoEntreLlegadas;
 
 
-            //Creamos un nuevo vehiculo, con estado EA por defecto
+
+            // Calculamos el tipo de vehículo y su duración de carga
+            this.RndTipoVehiculo = GeneradorRND.RndLenguaje();
+            this.TipoVehiculo = "Furgon"; // TO DO
+            this.RndDuracionCarga = GeneradorRND.RndLenguaje();
+            this.DuracionCarga = 10; //TO DO
+            // Intentamos asignar un puesto de carga
+            int puestoLibre = EstadoPuestos.FindIndex(e => e == "Libre");
+
+            // Creamos el nuevo vehículo
             Vehiculo nuevo_vehiculo = new Vehiculo(this.vehiculos_ingresados, this.Reloj);
 
-            this.RndDuracionCarga = GeneradorRND.RndLenguaje();
+            if (puestoLibre != -1)
+            {
+                EstadoPuestos[puestoLibre] = "Cargando";
+                TiempoOcupadoPuestos[puestoLibre] = 0;
+                nuevo_vehiculo.PuestoAsignado = puestoLibre;
+                nuevo_vehiculo.Estado = "Cargando";
+                nuevo_vehiculo.tFinCarga = this.Reloj + this.DuracionCarga; // Duración de carga
+                AutosAtendidos++;
+            }
+            else
+            {
+                nuevo_vehiculo.Estado = "Rechazado";
+                AutosRechazados++;
+            }
 
+            // Registramos el vehículo (si necesitás rastrearlo después)
+            this.vehiculos.Add(nuevo_vehiculo);
         }
+
+        public void ActualizarTiemposOcupacion(double relojAnterior)
+        {
+            double deltaT = this.Reloj - relojAnterior;
+
+            for (int i = 0; i < EstadoPuestos.Count; i++)
+            {
+                if (EstadoPuestos[i] == "Cargando")
+                {
+                    TiempoOcupadoPuestos[i] += deltaT;
+                }
+            }
+        }
+        public void ActualizarEstadosVehiculos()
+        {
+            foreach (var v in vehiculos)
+            {
+                if (v.Estado == "Cargando" && v.tFinCarga <= Reloj)
+                {
+                    v.Estado = "Esperando pago";
+           
+
+                }
+                else if (v.Estado == "Esperando pago")
+                {
+                    // Podés implementar cola o evento de pago futuro
+                }
+            }
+        }
+
 
     }
 

@@ -4,3 +4,35 @@ bin/
 obj/
 *.user
 *.suo
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.log
+
+# Others
+*.db
+*.db-journal
+*.bak
+*.tmp
+
+# Rider
+.idea/
+*.sln.iml
+
+# Windows thumbnail cache
+Thumbs.db
+
+# User-specific files
+*.csproj.user
