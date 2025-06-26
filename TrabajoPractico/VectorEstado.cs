@@ -40,10 +40,12 @@ namespace TrabajoPractico
         // Estadísticas
         public double MontoPorCarga { get; set; }
         public double MontoTotal { get; set; }
-        public int AutosAtendidos { get; set; }
-        public int AutosRechazados { get; set; }
+
         public double Recaudacion { get; set; }
-        public int colaPuestoPago { get; set; }
+        public List<bool> PuestoFueUsado { get; set; } = new List<bool>();
+        public HashSet<int> PuestosRecienOcupados { get; set; } = new HashSet<int>();
+
+
 
         public VectorEstado()
         {
@@ -61,12 +63,16 @@ namespace TrabajoPractico
         {
             EstadoPuestos.Clear();
             TiempoOcupadoPuestos.Clear();
+            PuestoFueUsado.Clear();
+
             for (int i = 0; i < cantidadPuestos; i++)
             {
                 EstadoPuestos.Add("Libre");
                 TiempoOcupadoPuestos.Add(0);
+                PuestoFueUsado.Add(false); // Al inicio, todos sin uso
             }
         }
+
 
         public void EventoInicio(double mediaLlegadas, int cantidadPuestos)
         {
@@ -88,15 +94,14 @@ namespace TrabajoPractico
             EstadoPago = "Libre";
 
             InicializarPuestos(cantidadPuestos);
-            AutosAtendidos = 0;
-            AutosRechazados = 0;
+
             Recaudacion = 0;
 
             PorcentajeOcupacionPuestos = 0;
             MontoPorCarga = 0;
             MontoTotal = 0;
             EstadoPago = "Libre";
-            colaPuestoPago = 0;
+
         }
 
         public void EventoLlegada(double mediaLlegadas)
@@ -116,25 +121,35 @@ namespace TrabajoPractico
 
             int puestoLibre = EstadoPuestos.FindIndex(e => e == "Libre");
 
-            Vehiculo nuevo = new Vehiculo(vehiculos_ingresados, Reloj);
+            Vehiculo nuevoVehiculo = new Vehiculo(vehiculos_ingresados, Reloj);
 
             if (puestoLibre != -1)
             {
                 EstadoPuestos[puestoLibre] = "Cargando";
-                TiempoOcupadoPuestos[puestoLibre] = 0;
-                nuevo.PuestoAsignado = puestoLibre;
-                nuevo.Estado = "Cargando";
-                nuevo.tFinCarga = Reloj + DuracionCarga;
-                AutosAtendidos++;
+
+                // Solo reiniciamos si es la primera vez que se usa ese puesto
+                if (!PuestoFueUsado[puestoLibre])
+                {
+                    TiempoOcupadoPuestos[puestoLibre] = 0.0;
+                    PuestoFueUsado[puestoLibre] = true;
+                }
+
+                PuestosRecienOcupados.Add(puestoLibre); 
+
+                nuevoVehiculo.PuestoAsignado = puestoLibre;
+                nuevoVehiculo.Estado = EstadoVehiculo.CARGANDO;
+                nuevoVehiculo.tInicioCarga = Reloj;
+                nuevoVehiculo.tFinCarga = Reloj + DuracionCarga;
+
             }
             else
             {
-                nuevo.Estado = "Rechazado";
-                AutosRechazados++;
+                nuevoVehiculo.Estado = EstadoVehiculo.RECHAZADO;
             }
 
-            Vehiculos.Add(nuevo);
+            Vehiculos.Add(nuevoVehiculo);
         }
+
 
         public void ActualizarTiemposOcupacion(double relojAnterior)
         {
@@ -142,12 +157,16 @@ namespace TrabajoPractico
 
             for (int i = 0; i < EstadoPuestos.Count; i++)
             {
-                if (EstadoPuestos[i] == "Cargando")
+                if (EstadoPuestos[i] == "Cargando" && !PuestosRecienOcupados.Contains(i))
                 {
                     TiempoOcupadoPuestos[i] += deltaT;
                 }
             }
+
+            // Limpiar la lista después de actualizar
+            PuestosRecienOcupados.Clear();
         }
+
 
         public void ActualizarEstadosVehiculos()
         {

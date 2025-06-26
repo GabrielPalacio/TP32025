@@ -15,7 +15,6 @@ namespace TrabajoPractico
         }
         public int nro { get; set; }
         public string Estado { get; set; }
-        public double TiempoCobro { get; set; }
         public double tInicioCarga { get; set; }
         public double tFinCarga { get; set; }
         public int? PuestoAsignado { get; set; }

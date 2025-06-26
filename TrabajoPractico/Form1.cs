@@ -71,13 +71,8 @@ namespace TrabajoPractico
         {
             int cantidadPuestos = rb8.Checked ? 8 : 10;
 
-            //Llamamos a la funcion que va a configurar las columnas(puestos) de la grilla ver que demora
             ConfigurarColumnasPuestos();
-
-            //arrancamos con la grilla limpia
             dataGridView1.Rows.Clear();
-
-            //Validamos campos completados
             validarCamposCompletados();
 
             Int64 iteraciones = Convert.ToInt64(txtIteraciones.Text);
@@ -86,11 +81,10 @@ namespace TrabajoPractico
             Double tiempo_desde = Convert.ToDouble(txtDesde.Text);
             Double tiempo_hasta = Convert.ToDouble(txtHasta.Text);
 
-
             fila_actual = new VectorEstado();
-
             Int64 i = 0;
-            for (; i <= iteraciones && this.fila_actual.Reloj <= tiempo; i++)
+
+            for (; i < iteraciones && fila_actual.Reloj <= tiempo; i++)
             {
                 string nombre_prox_evento = obtener_proximo_evento();
                 double relojAnterior = fila_actual.Reloj;
@@ -98,35 +92,30 @@ namespace TrabajoPractico
                 switch (nombre_prox_evento)
                 {
                     case EventoCarga.INICIO:
-                        this.fila_actual.EventoInicio(tiempo_entre_llegadas, cantidadPuestos);
+                        fila_actual.EventoInicio(tiempo_entre_llegadas, cantidadPuestos);
                         break;
-
                     case EventoCarga.LLEGADA_VEHICULO:
-                        this.fila_actual.EventoLlegada(tiempo_entre_llegadas);
+                        fila_actual.EventoLlegada(tiempo_entre_llegadas);
                         break;
-
                 }
+
                 fila_actual.ActualizarTiemposOcupacion(relojAnterior);
                 fila_actual.ActualizarEstadosVehiculos();
 
-                //Calculos estadisticos
-
-
-
-                if (this.fila_actual.Reloj >= tiempo_desde && this.fila_actual.Reloj <= tiempo_hasta)
+                // Solo se agregan filas visibles
+                if (fila_actual.Reloj >= tiempo_desde && fila_actual.Reloj <= tiempo_hasta)
                 {
                     agregarFila(i, fila_actual);
                 }
             }
 
-            if (dataGridView1.Rows.Count != i)
+            // Siempre agregar la última fila, incluso si está fuera del rango visible
+            if (dataGridView1.Rows.Count == 0 || fila_actual.Reloj > tiempo_hasta)
             {
                 agregarFila(i, fila_actual);
             }
-
-
-
         }
+
         private string obtener_proximo_evento()
         {
             double tiempo_min = Double.MaxValue;
@@ -159,7 +148,7 @@ namespace TrabajoPractico
                 fila.RndTipoVehiculo.ToString("N4"),
                 fila.TipoVehiculo,
                 fila.RndDuracionCarga.ToString("N4"),
-                fila.DuracionCarga.ToString("N2")
+                fila.DuracionCarga.ToString("N4")
 
             );
 
@@ -222,51 +211,69 @@ namespace TrabajoPractico
             foreach (Vehiculo item in fila_actual.Vehiculos)
             {
                 string colEstado = $"{baseCol}_{item.nro}_Estado";
-                string colCarga = $"{baseCol}_{item.nro}_Carga";
-                string colCobro = $"{baseCol}_{item.nro}_Cobro";
+                string colInicio = $"{baseCol}_{item.nro}_InicioCarga";
+                string colFin = $"{baseCol}_{item.nro}_FinCarga";
 
-                // Agregar columnas si no existen
+                // Crear columnas si no existen
                 if (!dataGridView1.Columns.Contains(colEstado))
                     dataGridView1.Columns.Add(colEstado, headerPrefix + item.nro + " Estado");
 
-                if (!dataGridView1.Columns.Contains(colCarga))
-                    dataGridView1.Columns.Add(colCarga, headerPrefix + item.nro + " Carga");
+                if (!dataGridView1.Columns.Contains(colInicio))
+                    dataGridView1.Columns.Add(colInicio, headerPrefix + item.nro + " Inicio");
 
-                if (!dataGridView1.Columns.Contains(colCobro))
-                    dataGridView1.Columns.Add(colCobro, headerPrefix + item.nro + " Cobro");
+                if (!dataGridView1.Columns.Contains(colFin))
+                    dataGridView1.Columns.Add(colFin, headerPrefix + item.nro + " Fin");
 
                 // Mostrar estado actual, con el puesto asignado si aplica
-                if (item.Estado.StartsWith("Cargando") && item.PuestoAsignado.HasValue)
+                if (item.Estado.StartsWith("C") && item.PuestoAsignado.HasValue)
                 {
-                    dataGridView1[colEstado, rowIndex].Value = $"Cargando ({item.PuestoAsignado.Value + 1})";
+                    dataGridView1[colEstado, rowIndex].Value = FormatearEstadoVehiculo(item);
                 }
                 else
                 {
                     dataGridView1[colEstado, rowIndex].Value = item.Estado;
                 }
 
+                // Mostrar tInicioCarga con 4 decimales
+                dataGridView1[colInicio, rowIndex].Value = item.tInicioCarga > 0
+                    ? item.tInicioCarga.ToString("N4")
+                    : "";
 
-                // Mostrar rango de carga si aplica
-                if (item.Estado.Contains("Cargando") && item.tFinCarga > 0)
-                {
-                    dataGridView1[colCarga, rowIndex].Value = $"{item.tInicioCarga:N2} - {item.tFinCarga:N4}";
-                }
-                else
-                {
-                    dataGridView1[colCarga, rowIndex].Value = "";
-                }
-
-                // Mostrar tiempo de cobro solo si está pagando o finalizó
-                if (item.Estado == "En puesto de pago" || item.Estado == "Abandona la estación")
-                {
-                    dataGridView1[colCobro, rowIndex].Value = item.TiempoCobro > 0 ? item.TiempoCobro.ToString("N4") : "";
-                }
-                else
-                {
-                    dataGridView1[colCobro, rowIndex].Value = "";
-                }
+                // Mostrar tFinCarga con 4 decimales
+                dataGridView1[colFin, rowIndex].Value = item.tFinCarga > 0
+                    ? item.tFinCarga.ToString("N4")
+                    : "";
             }
         }
+
+        private string FormatearEstadoVehiculo(Vehiculo v)
+        {
+            if (v.Estado.StartsWith("C"))
+            {
+                return v.PuestoAsignado.HasValue ? $"C ({v.PuestoAsignado.Value + 1})" : "C";
+            }
+            else if (v.Estado == EstadoVehiculo.ESPERANDO_PAGO)
+            {
+                return "EP";
+            }
+            else if (v.Estado == EstadoVehiculo.EN_PAGO)
+            {
+                return "PP";
+            }
+            else if (v.Estado == EstadoVehiculo.ABANDONA_ESTACION)
+            {
+                return "AE";
+            }
+            else if (v.Estado == EstadoVehiculo.RECHAZADO)
+            {
+                return "R";
+            }
+            else
+            {
+                return v.Estado;
+            }
+        }
+
 
 
 
