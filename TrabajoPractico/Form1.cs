@@ -81,60 +81,93 @@ namespace TrabajoPractico
             Double tiempo_desde = Convert.ToDouble(txtDesde.Text);
             Double tiempo_hasta = Convert.ToDouble(txtHasta.Text);
 
+            List<TablaProbabilidadesTiempoCarga> tabla = dgvTiempoToList(dgvTiempoCarga);
             fila_actual = new VectorEstado();
-            Int64 i = 0;
+            fila_actual.EventoInicio(tiempo_entre_llegadas, cantidadPuestos);
+
+            // ✅ Agregar la fila de Inicio explícitamente
+            agregarFila(0, fila_actual);
+
+            Int64 i = 1;
 
             for (; i < iteraciones && fila_actual.Reloj <= tiempo; i++)
             {
-                string nombre_prox_evento = obtener_proximo_evento();
                 double relojAnterior = fila_actual.Reloj;
 
-                switch (nombre_prox_evento)
+                var proximo = obtener_proximo_evento_completo(); // (evento, nroVehiculo)
+
+                switch (proximo.evento)
                 {
-                    case EventoCarga.INICIO:
-                        fila_actual.EventoInicio(tiempo_entre_llegadas, cantidadPuestos);
-                        break;
                     case EventoCarga.LLEGADA_VEHICULO:
-                        fila_actual.EventoLlegada(tiempo_entre_llegadas);
+                        fila_actual.EventoLlegada(tiempo_entre_llegadas,tabla);
+                        break;
+
+                    case EventoCarga.FIN_CARGA:
+                        fila_actual.EventoFinCarga(proximo.nroVehiculo);
                         break;
                 }
 
                 fila_actual.ActualizarTiemposOcupacion(relojAnterior);
+                fila_actual.CalcularPorcentajeOcupacion();
                 fila_actual.ActualizarEstadosVehiculos();
 
-                // Solo se agregan filas visibles
                 if (fila_actual.Reloj >= tiempo_desde && fila_actual.Reloj <= tiempo_hasta)
                 {
                     agregarFila(i, fila_actual);
                 }
             }
 
-            // Siempre agregar la última fila, incluso si está fuera del rango visible
             if (dataGridView1.Rows.Count == 0 || fila_actual.Reloj > tiempo_hasta)
             {
                 agregarFila(i, fila_actual);
             }
         }
 
-        private string obtener_proximo_evento()
+        private List<TablaProbabilidadesTiempoCarga> dgvTiempoToList(DataGridView dgvTiempoCarga)
         {
-            double tiempo_min = Double.MaxValue;
-            string nombre_evento = "";
+            List<TablaProbabilidadesTiempoCarga> lista = new List<TablaProbabilidadesTiempoCarga>();
 
-            if (fila_actual.Reloj == 0 && fila_actual.Evento == "")
+            foreach (DataGridViewRow row in dgvTiempoCarga.Rows)
             {
-                tiempo_min = fila_actual.Reloj;
-                nombre_evento = EventoCarga.INICIO;
-            }
+                TablaProbabilidadesTiempoCarga tpTCarga = new TablaProbabilidadesTiempoCarga();
+                tpTCarga.TiempoCarga = Convert.ToInt16(row.Cells[0].Value);
+                tpTCarga.Probabilidad = Convert.ToDouble(row.Cells[1].Value);
+                tpTCarga.ProbabilidadAcumulada = Convert.ToDouble(row.Cells[2].Value); //TO DO : Realizar truncamientos
 
+                lista.Add(tpTCarga);
+            }
+            return lista;
+        }
+
+        private (string evento, int nroVehiculo) obtener_proximo_evento_completo()
+        {
+            double tiempo_min = double.MaxValue;
+            string evento = "";
+            int nroVehiculo = -1;
+
+
+            // LLEGADA
             if (fila_actual.ProximaLlegada > 0 && fila_actual.ProximaLlegada < tiempo_min)
             {
                 tiempo_min = fila_actual.ProximaLlegada;
-                nombre_evento = EventoCarga.LLEGADA_VEHICULO;
+                evento = EventoCarga.LLEGADA_VEHICULO;
             }
 
-            return nombre_evento;
+            // FIN CARGA
+            foreach (var v in fila_actual.Vehiculos)
+            {
+                if (v.Estado.StartsWith("C") && v.tFinCarga >= fila_actual.Reloj && v.tFinCarga < tiempo_min)
+                {
+                    tiempo_min = v.tFinCarga;
+                    evento = EventoCarga.FIN_CARGA;
+                    nroVehiculo = v.nro;
+                }
+            }
+
+            return (evento, nroVehiculo);
         }
+
+
 
         private void agregarFila(Int64 nroFila, VectorEstado fila, bool visible = true)
         {
@@ -145,23 +178,34 @@ namespace TrabajoPractico
                 (fila.RndLlegada == 0) ? "" : fila.RndLlegada.ToString("N4"),
                 (fila.TiempoEntreLlegadas == 0) ? "" : fila.TiempoEntreLlegadas.ToString(),
                 (fila.ProximaLlegada == 0) ? "" : fila.ProximaLlegada.ToString("N4"),
-                fila.RndTipoVehiculo.ToString("N4"),
+                (fila.RndTipoVehiculo == 0) ? "" : fila.RndTipoVehiculo.ToString("N4"),
                 fila.TipoVehiculo,
                 fila.RndDuracionCarga.ToString("N4"),
                 fila.DuracionCarga.ToString("N4")
-
             );
 
             // 🔁 Agregar dinámicamente los estados y tiempos de cada puesto
-            int colBase = 10; 
+            int colBase = 10;
             for (int i = 0; i < fila.EstadoPuestos.Count; i++)
             {
                 dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2)].Value = fila.EstadoPuestos[i];
                 dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2) + 1].Value = fila.TiempoOcupadoPuestos[i].ToString("N2");
             }
-            agregarVehiculos(fila,rowIndex);
 
+            // Agregar Porcentaje de ocupación justo después de los puestos
+            int colPorcentaje = colBase + (fila.EstadoPuestos.Count * 2);
+            dataGridView1.Rows[rowIndex].Cells[colPorcentaje].Value = fila.PorcentajeOcupacionPuestos.ToString("N4");
+
+            // Zona de pago (estado, RND, concentración, demora, cola)
+            int colZonaPago = colPorcentaje + 1;
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago].Value = fila.EstadoPago;
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 1].Value = (fila.RndConcentracion == 0) ? "" : fila.RndConcentracion.ToString("N4");
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 2].Value = fila.NivelConcentracionObjetivo == 0 ? "" : fila.NivelConcentracionObjetivo.ToString("N4");
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 3].Value = fila.TiempoPago == 0 ? "" : fila.TiempoPago.ToString("N4");
+
+            agregarVehiculos(fila, rowIndex);
         }
+
 
         private void validarCamposCompletados()
         {
@@ -178,7 +222,7 @@ namespace TrabajoPractico
                 string nombre = dataGridView1.Columns[i].Name;
                 if (nombre.StartsWith("EstadoPuesto") || nombre.StartsWith("TiempoOcupado") ||
                     nombre == "PorcentajeOcupacion" || nombre == "EstadoPago" || nombre == "RNDPago" ||
-                    nombre == "NivelConcentracion" || nombre == "DemoraPago" || nombre == "ColaPago")
+                    nombre == "NivelConcentracion" || nombre == "DemoraPago" )
                 {
                     dataGridView1.Columns.RemoveAt(i);
                 }
@@ -193,11 +237,10 @@ namespace TrabajoPractico
 
             // Agregamos las columnas fijas finales
             dataGridView1.Columns.Add("PorcentajeOcupacion", "Porcentaje de ocupación de puestos");
-            dataGridView1.Columns.Add("EstadoPago", "Estado");
+            dataGridView1.Columns.Add("EstadoPago", "Estado Puesto de Pagos");
             dataGridView1.Columns.Add("RNDPago", "RND");
             dataGridView1.Columns.Add("NivelConcentracion", "Nivel de Concentración");
             dataGridView1.Columns.Add("DemoraPago", "Demora");
-            dataGridView1.Columns.Add("ColaPago", "Cola pago");
             dataGridView1.Columns.Add("MontoPorCarga", "Monto por carga");
             dataGridView1.Columns.Add("MontoTotal", "Monto total");
 
@@ -256,7 +299,7 @@ namespace TrabajoPractico
             {
                 return "EP";
             }
-            else if (v.Estado == EstadoVehiculo.EN_PAGO)
+            else if (v.Estado == EstadoVehiculo.REALIZANDO_PAGO)
             {
                 return "PP";
             }

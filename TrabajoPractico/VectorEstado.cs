@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TrabajoPractico
 {
@@ -83,15 +84,7 @@ namespace TrabajoPractico
             TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, RndLlegada);
             ProximaLlegada = Reloj + TiempoEntreLlegadas;
 
-            RndTipoVehiculo = 0;
-            TipoVehiculo = "";
-            RndDuracionCarga = 0;
-            DuracionCarga = 0;
 
-            RndConcentracion = 0;
-            NivelConcentracionObjetivo = 0;
-            TiempoPago = 0;
-            EstadoPago = "Libre";
 
             InicializarPuestos(cantidadPuestos);
 
@@ -104,7 +97,7 @@ namespace TrabajoPractico
 
         }
 
-        public void EventoLlegada(double mediaLlegadas)
+        public void EventoLlegada(double mediaLlegadas,List<TablaProbabilidadesTiempoCarga> tabla)
         {
             vehiculos_ingresados++;
             Evento = EventoCarga.LLEGADA_VEHICULO + " " + vehiculos_ingresados;
@@ -114,10 +107,7 @@ namespace TrabajoPractico
             TiempoEntreLlegadas = GeneradorRND.exponencial(mediaLlegadas, RndLlegada);
             ProximaLlegada = Reloj + TiempoEntreLlegadas;
 
-            RndTipoVehiculo = GeneradorRND.RndLenguaje();
-            TipoVehiculo = "Furgon"; // TODO
-            RndDuracionCarga = GeneradorRND.RndLenguaje();
-            DuracionCarga = 10; // TODO
+            calcular_tiempo_carga(tabla);
 
             int puestoLibre = EstadoPuestos.FindIndex(e => e == "Libre");
 
@@ -167,6 +157,38 @@ namespace TrabajoPractico
             PuestosRecienOcupados.Clear();
         }
 
+        public void EventoFinCarga(int nroVehiculo)
+        {
+            Evento = $"Fin Carga Vehículo {nroVehiculo}";
+
+
+            // Buscamos el vehículo
+            Vehiculo v = Vehiculos.FirstOrDefault(veh => veh.nro == nroVehiculo);
+            if (v == null || v.PuestoAsignado == null) return;
+
+            int puesto = v.PuestoAsignado.Value;
+
+            // Actualizamos reloj al tiempo en que termina la carga
+            Reloj = v.tFinCarga;
+
+            // Liberamos el puesto
+            EstadoPuestos[puesto] = "Libre";
+            TiempoOcupadoPuestos[puesto] += (v.tFinCarga - v.tInicioCarga); // Acumulamos
+
+            // Decidir el estado del pago
+            if (EstadoPago == "Libre")
+            {
+                EstadoPago = "Ocupado";
+                v.Estado = EstadoVehiculo.REALIZANDO_PAGO;
+
+                // Acá luego se integrará lógica de Runge-Kutta para demora y tiempo de pago
+            }
+            else
+            {
+                v.Estado = EstadoVehiculo.ESPERANDO_PAGO;
+            }
+        }
+
 
         public void ActualizarEstadosVehiculos()
         {
@@ -178,5 +200,35 @@ namespace TrabajoPractico
                 }
             }
         }
+        private void calcular_tiempo_carga(List<TablaProbabilidadesTiempoCarga> tablaProbabilidads)
+        {
+            this.RndDuracionCarga = GeneradorRND.RndLenguaje();
+
+
+            //Buscamos el tipo y tiempo de carga según la tabla de probabilidades
+            foreach (TablaProbabilidadesTiempoCarga item in tablaProbabilidads)
+            {
+                if (this.RndDuracionCarga < item.ProbabilidadAcumulada)
+                {
+                    this.DuracionCarga = item.TiempoCarga;
+
+                    //Luego de encontrar el trabajo, finaliza la ejecución del ciclo
+                    break;
+                }
+            }
+        }
+        public void CalcularPorcentajeOcupacion()
+        {
+            if (Reloj <= 0 || EstadoPuestos.Count == 0)
+            {
+                PorcentajeOcupacionPuestos = 0;
+                return;
+            }
+
+            double sumaTiempos = TiempoOcupadoPuestos.Sum();
+            double totalPosible = EstadoPuestos.Count * Reloj;
+            PorcentajeOcupacionPuestos = (sumaTiempos / totalPosible) * 100;
+        }
+
     }
 }

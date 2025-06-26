@@ -10,7 +10,7 @@ namespace TrabajoPractico
     {
         public static string CARGANDO = "C";
         public static string ESPERANDO_PAGO = "EP";
-        public static string EN_PAGO = "PP";
+        public static string REALIZANDO_PAGO = "RP";
         public static string ABANDONA_ESTACION = "AE";
         public static string RECHAZADO = "R";
     }
