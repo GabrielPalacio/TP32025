@@ -26,6 +26,8 @@ namespace TrabajoPractico
         public string TipoVehiculo { get; set; }
         public double RndDuracionCarga { get; set; }
         public double DuracionCarga { get; set; }
+        private bool mostrarDatosVehiculoFinAtencion = false;
+        public bool MostrarDatosVehiculoFinAtencion => mostrarDatosVehiculoFinAtencion;
 
         // Puestos de carga
         public List<string> EstadoPuestos { get; set; }
@@ -204,26 +206,44 @@ namespace TrabajoPractico
             }
         }
 
-        public void EventoFinAtencion(int nroVehiculo)
+        public void EventoFinAtencion(int nroVehiculo, List<TablaProbabilidadesTipoVehiculo> tabla)
         {
             Evento = $"Fin de atención Vehículo {nroVehiculo}";
-
-            // Actualizar reloj al tiempo de fin de pago
             Reloj = TiempoFinPago;
 
-            // Marcar al vehículo como atendido
             Vehiculo v = Vehiculos.FirstOrDefault(veh => veh.nro == nroVehiculo);
             if (v != null)
             {
                 v.Estado = EstadoVehiculo.ABANDONA_ESTACION;
-                Recaudacion += MontoPorCarga;
+
+                // Buscar el tipo
+                this.RndTipoVehiculo = GeneradorRND.RndLenguaje();
+                foreach (TablaProbabilidadesTipoVehiculo item in tabla)
+                {
+                    if (this.RndTipoVehiculo < item.ProbabilidadAcumulada)
+                    {
+                        this.TipoVehiculo = item.NombreVehiculo;
+                        double tiempoHoras = (v.tFinCarga - v.tInicioCarga) / 60.0;
+                        this.MontoPorCarga = item.Precio* tiempoHoras;
+                        //Luego de encontrar el trabajo, finaliza la ejecución del ciclo
+                        break;
+                    }
+                    else
+                    {
+                        MontoPorCarga = 0;
+                    }
+                }
+
+                // Acumulamos el total
+                MontoTotal += MontoPorCarga;
             }
 
-            // Liberar cajero
             EstadoPago = "Libre";
             TiempoFinPago = 0;
 
-            // Buscar otro vehículo esperando pago
+            mostrarDatosVehiculoFinAtencion = true;
+
+            // Buscar siguiente en espera
             Vehiculo siguiente = Vehiculos.FirstOrDefault(x => x.Estado == EstadoVehiculo.ESPERANDO_PAGO);
             if (siguiente != null)
             {
@@ -231,7 +251,6 @@ namespace TrabajoPractico
                 siguiente.Estado = EstadoVehiculo.REALIZANDO_PAGO;
 
                 RndConcentracion = GeneradorRND.RndLenguaje();
-
                 if (RndConcentracion == 0)
                 {
                     NivelConcentracionObjetivo = 0;
@@ -239,21 +258,23 @@ namespace TrabajoPractico
                 }
                 else
                 {
-                    NivelConcentracionObjetivo = GeneradorRND.uniforme(ParametrosGlobales.ConcentracionDesde, ParametrosGlobales.ConcentracionHasta, RndConcentracion);
+                    NivelConcentracionObjetivo = GeneradorRND.uniforme(
+                        ParametrosGlobales.ConcentracionDesde,
+                        ParametrosGlobales.ConcentracionHasta,
+                        RndConcentracion
+                    );
                     if (NivelConcentracionObjetivo > ParametrosGlobales.MaxNivelConcentracion)
                         ParametrosGlobales.MaxNivelConcentracion = NivelConcentracionObjetivo;
 
                     DemoraPago = MetodoRungeKutta.CalcularTiempo(
-                        NivelConcentracionObjetivo,
-                        ParametrosGlobales.A,
-                        ParametrosGlobales.B,
-                        ParametrosGlobales.H
+                        NivelConcentracionObjetivo, ParametrosGlobales.A, ParametrosGlobales.B, ParametrosGlobales.H
                     );
                 }
 
                 TiempoFinPago = Reloj + DemoraPago;
             }
         }
+
 
 
 
@@ -284,6 +305,23 @@ namespace TrabajoPractico
                 }
             }
         }
+        private void calcular_tipo_vehiculo(List<TablaProbabilidadesTipoVehiculo> tablaProbabilidads)
+        {
+            this.RndTipoVehiculo = GeneradorRND.RndLenguaje();
+
+
+            //Buscamos el tipo y tiempo de carga según la tabla de probabilidades
+            foreach (TablaProbabilidadesTipoVehiculo item in tablaProbabilidads)
+            {
+                if (this.RndTipoVehiculo < item.ProbabilidadAcumulada)
+                {
+                    this.TipoVehiculo = item.NombreVehiculo;
+
+                    //Luego de encontrar el trabajo, finaliza la ejecución del ciclo
+                    break;
+                }
+            }
+        }
         public void CalcularPorcentajeOcupacion()
         {
             if (Reloj <= 0 || EstadoPuestos.Count == 0)
@@ -295,6 +333,10 @@ namespace TrabajoPractico
             double sumaTiempos = TiempoOcupadoPuestos.Sum();
             double totalPosible = EstadoPuestos.Count * Reloj;
             PorcentajeOcupacionPuestos = (sumaTiempos / totalPosible) * 100;
+        }
+        public void ResetearBanderaFinAtencion()
+        {
+            mostrarDatosVehiculoFinAtencion = false;
         }
 
     }

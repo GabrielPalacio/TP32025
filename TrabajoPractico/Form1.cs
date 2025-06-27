@@ -88,6 +88,7 @@ namespace TrabajoPractico
             ParametrosGlobales.H = Convert.ToDouble(txtPaso.Text);
 
             List<TablaProbabilidadesTiempoCarga> tabla = dgvTiempoToList(dgvTiempoCarga);
+            List<TablaProbabilidadesTipoVehiculo> tablaTipoVehiculo = dgvTipoVehiculoToList(dgvTipoVehiculo);
             fila_actual = new VectorEstado();
             fila_actual.EventoInicio(tiempo_entre_llegadas, cantidadPuestos);
 
@@ -112,7 +113,7 @@ namespace TrabajoPractico
                         fila_actual.EventoFinCarga(proximo.nroVehiculo);
                         break;
                     case EventoCarga.FIN_ATENCION_VEHICULO:
-                        fila_actual.EventoFinAtencion(proximo.nroVehiculo);
+                        fila_actual.EventoFinAtencion(proximo.nroVehiculo, tablaTipoVehiculo);
                         break;
 
                 }
@@ -142,9 +143,25 @@ namespace TrabajoPractico
                 TablaProbabilidadesTiempoCarga tpTCarga = new TablaProbabilidadesTiempoCarga();
                 tpTCarga.TiempoCarga = Convert.ToInt16(row.Cells[0].Value);
                 tpTCarga.Probabilidad = Convert.ToDouble(row.Cells[1].Value);
-                tpTCarga.ProbabilidadAcumulada = Convert.ToDouble(row.Cells[2].Value); //TO DO : Realizar truncamientos
+                tpTCarga.ProbabilidadAcumulada = Convert.ToDouble(row.Cells[2].Value);
 
                 lista.Add(tpTCarga);
+            }
+            return lista;
+        }
+        private List<TablaProbabilidadesTipoVehiculo> dgvTipoVehiculoToList(DataGridView dgvTipoVehiculo)
+        {
+            List<TablaProbabilidadesTipoVehiculo> lista = new List<TablaProbabilidadesTipoVehiculo>();
+
+            foreach (DataGridViewRow row in dgvTipoVehiculo.Rows)
+            {
+                TablaProbabilidadesTipoVehiculo tpTTipoVehiculo = new TablaProbabilidadesTipoVehiculo();
+                tpTTipoVehiculo.NombreVehiculo = Convert.ToString(row.Cells[0].Value);
+                tpTTipoVehiculo.Probabilidad = Convert.ToDouble(row.Cells[1].Value);
+                tpTTipoVehiculo.ProbabilidadAcumulada = Convert.ToDouble(row.Cells[2].Value);
+                tpTTipoVehiculo.Precio = Convert.ToDouble(row.Cells[3].Value);
+
+                lista.Add(tpTTipoVehiculo);
             }
             return lista;
         }
@@ -200,10 +217,11 @@ namespace TrabajoPractico
                 (fila.RndLlegada == 0) ? "" : fila.RndLlegada.ToString("N4"),
                 (fila.TiempoEntreLlegadas == 0) ? "" : fila.TiempoEntreLlegadas.ToString(),
                 (fila.ProximaLlegada == 0) ? "" : fila.ProximaLlegada.ToString("N4"),
-                (fila.RndTipoVehiculo == 0) ? "" : fila.RndTipoVehiculo.ToString("N4"),
-                fila.TipoVehiculo,
-                fila.RndDuracionCarga.ToString("N4"),
-                fila.DuracionCarga.ToString("N4")
+                fila.MostrarDatosVehiculoFinAtencion ? fila.RndTipoVehiculo.ToString("N4") : "",
+                fila.MostrarDatosVehiculoFinAtencion ? fila.TipoVehiculo : "",
+                fila.Evento.StartsWith(EventoCarga.LLEGADA_VEHICULO) ? fila.RndDuracionCarga.ToString("N4") : "",
+                fila.Evento.StartsWith(EventoCarga.LLEGADA_VEHICULO) ? fila.DuracionCarga.ToString("N4") : ""
+
             );
 
             // 🔁 Agregar dinámicamente los estados y tiempos de cada puesto
@@ -232,8 +250,19 @@ namespace TrabajoPractico
             dataGridView1.Rows[rowIndex].Cells[colZonaPago + 4].Value =
                 mostrarZonaPago && fila.TiempoFinPago != 0 ? fila.TiempoFinPago.ToString("N4") : "";
 
+            // Columnas finales: Monto por carga y total
+            int colMonto = colZonaPago + 5;
+            dataGridView1.Rows[rowIndex].Cells[colMonto].Value =
+    fila.Evento.StartsWith("Fin de atención Vehículo") && fila.MontoPorCarga != 0
+        ? fila.MontoPorCarga.ToString("N2")
+        : "";
+            dataGridView1.Rows[rowIndex].Cells[colMonto + 1].Value = fila.MontoTotal.ToString("N2");
+
             agregarVehiculos(fila, rowIndex);
+            fila.ResetearBanderaFinAtencion();
+
         }
+
 
 
 
@@ -344,7 +373,7 @@ namespace TrabajoPractico
             }
             else if (v.Estado == EstadoVehiculo.RECHAZADO)
             {
-                return "R";
+                return "Rechazado";
             }
             else
             {
