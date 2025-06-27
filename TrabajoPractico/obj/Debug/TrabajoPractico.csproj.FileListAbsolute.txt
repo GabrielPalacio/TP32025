@@ -19,3 +19,14 @@ C:\Users\mbvul\Desktop\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.csproj.
 C:\Users\mbvul\Desktop\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.csproj.CoreCompileInputs.cache
 C:\Users\mbvul\Desktop\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.exe
 C:\Users\mbvul\Desktop\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.pdb
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.csproj.AssemblyReference.cache
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.Form1.resources
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.FormTablaRK.resources
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.Properties.Resources.resources
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.csproj.GenerateResource.cache
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.csproj.CoreCompileInputs.cache
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.exe
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\obj\Debug\TrabajoPractico.pdb
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\bin\Debug\TrabajoPractico.exe.config
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\bin\Debug\TrabajoPractico.exe
+C:\Users\Gabriel\Documents\Sim TP 2025\TP32025\TrabajoPractico\bin\Debug\TrabajoPractico.pdb

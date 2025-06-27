@@ -50,9 +50,9 @@ namespace TrabajoPractico
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            dgvTipoVehiculo.Rows.Insert(0, "Compacto", 45, 0.45,300);
-            dgvTipoVehiculo.Rows.Insert(1, "SUV", 25, 0.70, 500);
-            dgvTipoVehiculo.Rows.Insert(2, "Furgon", 30, 1, 1000);
+            dgvTipoVehiculo.Rows.Insert(0, "Compacto", 0.45, 0.45,300);
+            dgvTipoVehiculo.Rows.Insert(1, "SUV", 0.25, 0.70, 500);
+            dgvTipoVehiculo.Rows.Insert(2, "Furgon", 0.30, 1, 1000);
 
             dgvTiempoCarga.Rows.Insert(0, 60, 0.5, 0.5);
             dgvTiempoCarga.Rows.Insert(1, 120, 0.3, 0.8);
@@ -74,12 +74,18 @@ namespace TrabajoPractico
             ConfigurarColumnasPuestos();
             dataGridView1.Rows.Clear();
             validarCamposCompletados();
+            ParametrosGlobales.MaxNivelConcentracion = 0;
 
             Int64 iteraciones = Convert.ToInt64(txtIteraciones.Text);
             Int64 tiempo_entre_llegadas = Convert.ToInt64(txtTllegada.Text);
             Double tiempo = Convert.ToDouble(txtTiempo.Text);
             Double tiempo_desde = Convert.ToDouble(txtDesde.Text);
             Double tiempo_hasta = Convert.ToDouble(txtHasta.Text);
+            ParametrosGlobales.ConcentracionDesde = Convert.ToDouble(txtConcentracionA.Text);
+            ParametrosGlobales.ConcentracionHasta = Convert.ToDouble(txtConcentracionB.Text);
+            ParametrosGlobales.A = Convert.ToDouble(txtRKA.Text);
+            ParametrosGlobales.B = Convert.ToDouble(txtRKB.Text);
+            ParametrosGlobales.H = Convert.ToDouble(txtPaso.Text);
 
             List<TablaProbabilidadesTiempoCarga> tabla = dgvTiempoToList(dgvTiempoCarga);
             fila_actual = new VectorEstado();
@@ -105,6 +111,10 @@ namespace TrabajoPractico
                     case EventoCarga.FIN_CARGA:
                         fila_actual.EventoFinCarga(proximo.nroVehiculo);
                         break;
+                    case EventoCarga.FIN_ATENCION_VEHICULO:
+                        fila_actual.EventoFinAtencion(proximo.nroVehiculo);
+                        break;
+
                 }
 
                 fila_actual.ActualizarTiemposOcupacion(relojAnterior);
@@ -163,6 +173,18 @@ namespace TrabajoPractico
                     nroVehiculo = v.nro;
                 }
             }
+            // FIN PAGO
+            if (fila_actual.TiempoFinPago > 0 && fila_actual.TiempoFinPago < tiempo_min)
+            {
+                tiempo_min = fila_actual.TiempoFinPago;
+                evento = EventoCarga.FIN_ATENCION_VEHICULO;
+
+                // Buscamos el vehículo que está en pago
+                var pagando = fila_actual.Vehiculos.FirstOrDefault(x => x.Estado == EstadoVehiculo.REALIZANDO_PAGO);
+                if (pagando != null)
+                    nroVehiculo = pagando.nro;
+            }
+
 
             return (evento, nroVehiculo);
         }
@@ -192,19 +214,27 @@ namespace TrabajoPractico
                 dataGridView1.Rows[rowIndex].Cells[colBase + (i * 2) + 1].Value = fila.TiempoOcupadoPuestos[i].ToString("N2");
             }
 
-            // Agregar Porcentaje de ocupación justo después de los puestos
+            // Porcentaje de ocupación
             int colPorcentaje = colBase + (fila.EstadoPuestos.Count * 2);
             dataGridView1.Rows[rowIndex].Cells[colPorcentaje].Value = fila.PorcentajeOcupacionPuestos.ToString("N4");
 
-            // Zona de pago (estado, RND, concentración, demora, cola)
+            // Zona de pago
             int colZonaPago = colPorcentaje + 1;
+            bool mostrarZonaPago = fila.EstadoPago == "Ocupado";
+
             dataGridView1.Rows[rowIndex].Cells[colZonaPago].Value = fila.EstadoPago;
-            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 1].Value = (fila.RndConcentracion == 0) ? "" : fila.RndConcentracion.ToString("N4");
-            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 2].Value = fila.NivelConcentracionObjetivo == 0 ? "" : fila.NivelConcentracionObjetivo.ToString("N4");
-            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 3].Value = fila.TiempoPago == 0 ? "" : fila.TiempoPago.ToString("N4");
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 1].Value =
+                mostrarZonaPago && fila.RndConcentracion != 0 ? fila.RndConcentracion.ToString("N4") : "";
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 2].Value =
+                mostrarZonaPago && fila.NivelConcentracionObjetivo != 0 ? fila.NivelConcentracionObjetivo.ToString("N4") : "";
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 3].Value =
+                mostrarZonaPago && fila.DemoraPago != 0 ? fila.DemoraPago.ToString("N4") : "";
+            dataGridView1.Rows[rowIndex].Cells[colZonaPago + 4].Value =
+                mostrarZonaPago && fila.TiempoFinPago != 0 ? fila.TiempoFinPago.ToString("N4") : "";
 
             agregarVehiculos(fila, rowIndex);
         }
+
 
 
         private void validarCamposCompletados()
@@ -215,7 +245,11 @@ namespace TrabajoPractico
         private void ConfigurarColumnasPuestos()
         {
             int cantidadPuestos = rb8.Checked ? 8 : 10;
-
+            // 🔁 Eliminar TODAS las columnas excepto las fijas iniciales
+            while (dataGridView1.Columns.Count > 10) // 10 o las que tengas fijas al inicio
+            {
+                dataGridView1.Columns.RemoveAt(dataGridView1.Columns.Count - 1);
+            }
             // Remover columnas anteriores si ya existían (solo las dinámicas)
             for (int i = dataGridView1.Columns.Count - 1; i >= 0; i--)
             {
@@ -241,6 +275,7 @@ namespace TrabajoPractico
             dataGridView1.Columns.Add("RNDPago", "RND");
             dataGridView1.Columns.Add("NivelConcentracion", "Nivel de Concentración");
             dataGridView1.Columns.Add("DemoraPago", "Demora");
+            dataGridView1.Columns.Add("TiempoCobro", "Tiempo Cobro");
             dataGridView1.Columns.Add("MontoPorCarga", "Monto por carga");
             dataGridView1.Columns.Add("MontoTotal", "Monto total");
 
@@ -317,8 +352,16 @@ namespace TrabajoPractico
             }
         }
 
+        private void btnRunge_Click(object sender, EventArgs e)
+        {
+            double a = Convert.ToDouble(txtConcentracionA.Text);
+            double b = Convert.ToDouble(txtConcentracionB.Text);
+            double h = Convert.ToDouble(txtPaso.Text);
+            double rkA = Convert.ToDouble(txtRKA.Text);
+            double rkB = Convert.ToDouble(txtRKB.Text);
 
-
-
+            FormTablaRK formTabla = new FormTablaRK(a, b, h, rkA, rkB);
+            formTabla.ShowDialog();
+        }
     }
 }

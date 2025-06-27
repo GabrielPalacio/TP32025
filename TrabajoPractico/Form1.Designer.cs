@@ -335,7 +335,7 @@
             this.txtPaso.Name = "txtPaso";
             this.txtPaso.Size = new System.Drawing.Size(82, 30);
             this.txtPaso.TabIndex = 19;
-            this.txtPaso.Text = "0.1";
+            this.txtPaso.Text = "0,1";
             // 
             // dataGridView1
             // 
@@ -669,6 +669,7 @@
             this.btnRunge.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRunge.TextColor = System.Drawing.Color.White;
             this.btnRunge.UseVisualStyleBackColor = false;
+            this.btnRunge.Click += new System.EventHandler(this.btnRunge_Click);
             // 
             // btnSimular
             // 

@@ -35,7 +35,8 @@ namespace TrabajoPractico
         public double PorcentajeOcupacionPuestos;
         public double RndConcentracion { get; set; }
         public double NivelConcentracionObjetivo { get; set; }
-        public double TiempoPago { get; set; }
+        public double DemoraPago { get; set; }
+        public double TiempoFinPago { get; set; } // Tiempo que tarda el vehículo en pagar
         public string EstadoPago { get; set; }
 
         // Estadísticas
@@ -181,13 +182,79 @@ namespace TrabajoPractico
                 EstadoPago = "Ocupado";
                 v.Estado = EstadoVehiculo.REALIZANDO_PAGO;
 
-                // Acá luego se integrará lógica de Runge-Kutta para demora y tiempo de pago
+                // Generar RND para nivel de concentración
+                RndConcentracion = GeneradorRND.RndLenguaje();
+
+                if (RndConcentracion == 0)
+                {
+                    NivelConcentracionObjetivo = 0;
+                    DemoraPago = 0;
+                }
+                else
+                {
+                    NivelConcentracionObjetivo = GeneradorRND.uniforme(ParametrosGlobales.ConcentracionDesde, ParametrosGlobales.ConcentracionHasta, RndConcentracion);
+                    if (NivelConcentracionObjetivo > ParametrosGlobales.MaxNivelConcentracion)
+                        ParametrosGlobales.MaxNivelConcentracion = NivelConcentracionObjetivo;
+                    DemoraPago = MetodoRungeKutta.CalcularTiempo(NivelConcentracionObjetivo, ParametrosGlobales.A, ParametrosGlobales.B, ParametrosGlobales.H);
+                }
+                TiempoFinPago = Reloj + DemoraPago;
             }
-            else
-            {
-                v.Estado = EstadoVehiculo.ESPERANDO_PAGO;
+            else { 
+                v.Estado = EstadoVehiculo.ESPERANDO_PAGO; //queda esperando a que se retire el vehículo que está pagando y luego en fin de atencion va a calcular su fin
             }
         }
+
+        public void EventoFinAtencion(int nroVehiculo)
+        {
+            Evento = $"Fin de atención Vehículo {nroVehiculo}";
+
+            // Actualizar reloj al tiempo de fin de pago
+            Reloj = TiempoFinPago;
+
+            // Marcar al vehículo como atendido
+            Vehiculo v = Vehiculos.FirstOrDefault(veh => veh.nro == nroVehiculo);
+            if (v != null)
+            {
+                v.Estado = EstadoVehiculo.ABANDONA_ESTACION;
+                Recaudacion += MontoPorCarga;
+            }
+
+            // Liberar cajero
+            EstadoPago = "Libre";
+            TiempoFinPago = 0;
+
+            // Buscar otro vehículo esperando pago
+            Vehiculo siguiente = Vehiculos.FirstOrDefault(x => x.Estado == EstadoVehiculo.ESPERANDO_PAGO);
+            if (siguiente != null)
+            {
+                EstadoPago = "Ocupado";
+                siguiente.Estado = EstadoVehiculo.REALIZANDO_PAGO;
+
+                RndConcentracion = GeneradorRND.RndLenguaje();
+
+                if (RndConcentracion == 0)
+                {
+                    NivelConcentracionObjetivo = 0;
+                    DemoraPago = 0;
+                }
+                else
+                {
+                    NivelConcentracionObjetivo = GeneradorRND.uniforme(ParametrosGlobales.ConcentracionDesde, ParametrosGlobales.ConcentracionHasta, RndConcentracion);
+                    if (NivelConcentracionObjetivo > ParametrosGlobales.MaxNivelConcentracion)
+                        ParametrosGlobales.MaxNivelConcentracion = NivelConcentracionObjetivo;
+
+                    DemoraPago = MetodoRungeKutta.CalcularTiempo(
+                        NivelConcentracionObjetivo,
+                        ParametrosGlobales.A,
+                        ParametrosGlobales.B,
+                        ParametrosGlobales.H
+                    );
+                }
+
+                TiempoFinPago = Reloj + DemoraPago;
+            }
+        }
+
 
 
         public void ActualizarEstadosVehiculos()
